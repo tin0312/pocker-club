@@ -545,7 +545,7 @@ ul li {
   outline: 0;
   box-shadow: none;
   color: rgba(255, 255, 255, 0.8);
-  background: #350b2d;
+  background: #14343b;
 }
 
 .form--control:focus {
@@ -1138,25 +1138,25 @@ i {
 
 .logo img {
   max-width: 180px;
-  max-height: 60px;
+  max-height: 180px;
 }
 
 @media (max-width: 1199px) {
   .logo img {
-    max-width: 160px;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 767px) {
   .logo img {
-    max-width: 150px;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 575px) {
   .logo img {
-    max-width: 100px;
-    max-height: 50px;
+    max-width: 130px;
+    max-height: 130px;
   }
 }
 
@@ -1373,7 +1373,7 @@ i {
   }
 
   .menu.active {
-    background: #2e0327;
+    background: #14343b;
     opacity: 1;
     transform: translateY(0) scaleY(1);
     visibility: visible;
@@ -2479,7 +2479,7 @@ select.form--control option:hover {
 .contact-info-wrapper {
   padding: 60px 40px;
   border: 1px solid rgba(255, 200, 39, 0.3);
-  background: #350b2d;
+  background: #14343b;
   position: relative;
   z-index: 1;
 }
@@ -4391,7 +4391,7 @@ iframe {
 .preloader {
   width: 100%;
   height: 100%;
-  background: #2e0327;
+  background: #14343b;
   position: fixed;
   top: 0;
   left: 0;
@@ -4546,15 +4546,15 @@ iframe {
 .scene .cube__face {
   display: grid;
   grid-template: repeat(3, 45px) / repeat(3, 45px);
-  border: 1px solid #2e0327;
-  background: #4b0e40;
+  border: 1px solid #1abc9c;
+  background: #14343b;
   position: absolute;
   width: 200px;
   height: 200px;
   padding: 32.5px;
 }
 .scene .cube__face--front i::after {
-  background: #e74c3c;
+  background: #1abc9c;
 }
 .scene .cube__face--back i::after {
   background: #1abc9c;
