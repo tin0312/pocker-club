@@ -434,6 +434,7 @@ body {
   min-height: 100vh;
 }
 
+
 h1,
 h2,
 h3,
@@ -525,8 +526,8 @@ ul li {
 
 .bg_img {
   background-size: cover !important;
-  background-position: center center;
   background-repeat: no-repeat !important;
+  background-position: center top 16% !important;
 }
 
 .bg_fixed {
@@ -1495,7 +1496,7 @@ i {
   height: 100%;
   left: 0;
   top: 0;
-  background: #2e0327;
+  background: #14343b;
   opacity: 0.75;
 }
 
@@ -2891,8 +2892,8 @@ select.form--control option:hover {
   height: 100%;
   left: 0;
   top: 0;
-  background: #14343b;
-  opacity: 0.9;
+  opacity: 0.968;
+  background-color: #14343b;
 }
 
 .bg_img .container {
@@ -3103,7 +3104,7 @@ select.form--control option:hover {
   position: relative;
 }
 
-.why-section .shape1 {
+.why-section .shape1{
   left: -100px;
   top: 50px;
   z-index: -1;
