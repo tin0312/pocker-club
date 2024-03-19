@@ -551,7 +551,7 @@ ul li {
 
 .form--control:focus {
   color: #fff;
-  background: #350b2d;
+  background: #14343b;
   border: 1px solid rgba(255, 200, 39, 0.6);
   outline: 0;
   box-shadow: none;
@@ -599,6 +599,7 @@ select.lang-select {
 textarea.form--control {
   height: 150px;
   padding-top: 10px;
+
 }
 
 .title,
@@ -2431,13 +2432,11 @@ select.form--control option:hover {
   transform: translateY(-50%);
   clip-path: polygon(0 0, 0 100%, 42% 50%);
 }
-
 .contact-wrapper {
   padding: 60px 40px;
   position: relative;
   overflow: hidden;
 }
-
 @media (max-width: 767px) {
   .contact-wrapper {
     padding: 0;
@@ -2452,7 +2451,7 @@ select.form--control option:hover {
   left: 0;
   top: 0;
   left: 300px;
-  background: #14343b;
+  background: #0f2d32;
 }
 
 @media (max-width: 767px) {
@@ -2892,7 +2891,7 @@ select.form--control option:hover {
   height: 100%;
   left: 0;
   top: 0;
-  opacity: 0.968;
+  opacity: 0.95;
   background-color: #14343b;
 }
 
