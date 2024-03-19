@@ -5,8 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino - Online Casino Platform</title>
-    <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+    <title>Omega Poker</title>
+    <link rel="apple-touch-icon" sizes="180x180" href=./assets/g">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
+    <link rel="manifest" href="./assets/images/site.webmanifest">
     <!-- bootstrap 5  -->
     <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
     <!-- Icon Link  -->
@@ -137,28 +140,31 @@
                                     <div class="form-group">
                                         <label for="lname" class="form-label">Last Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="lname" type="text" class="form-control form--control"></input>
+                                        <input id="lname" type="text" class="form-control form--control" required
+                                            minlength="6" maxlength="20"></input>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email Address <span
                                                 class="text--danger">*</span></label>
-                                        <input id="email" type="text" class="form-control form--control"></input>
+                                        <input id="email" type="text" class="form-control form--control"
+                                            required></input>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone" class="form-label">Phone Number <span
                                                 class="text--danger">*</span></label>
-                                        <input id="phone" type="text" class="form-control form--control"></input>
+                                        <input id="phone" type="text" class="form-control form--control"
+                                            required></input>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="msg" class="form-label">Your Message <span
                                                 class="text--danger">*</span></label>
-                                        <textarea id="msg" class="form-control form--control"></textarea>
+                                        <textarea id="msg" class="form-control form--control" required></textarea>
                                     </div>
                                 </div>
                                 <div class="col">
