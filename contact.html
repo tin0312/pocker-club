@@ -133,31 +133,32 @@
                                     <div class="form-group">
                                         <label for="fname" class="form-label">First Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="fname" type="text" class="form-control form--control"></input>
+                                        <input id="fname" type="text" class="form-control form--control" minlength="2"
+                                            maxlength="20" pattern="[A-Za-z]+" required></input>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lname" class="form-label">Last Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="lname" type="text" class="form-control form--control" required
-                                            minlength="6" maxlength="20"></input>
+                                        <input id="lname" type="text" class="form-control form--control" minlength="2"
+                                            maxlength="20" pattern="[a-zA-Z]+"></input>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email Address <span
                                                 class="text--danger">*</span></label>
-                                        <input id="email" type="text" class="form-control form--control"
-                                            required></input>
+                                        <input id="email" type="email" class="form-control form--control"
+                                            pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="phone" class="form-label">Phone Number <span
+                                        <label for="tel" class="form-label">Phone Number <span
                                                 class="text--danger">*</span></label>
-                                        <input id="phone" type="text" class="form-control form--control"
-                                            required></input>
+                                        <input id="phone" type="number" class="form-control form--control"
+                                            pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required></input>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
