@@ -126,30 +126,30 @@
                         </div>
                     </div>
                     <div class="col-lg-7">
-                        <form class="contact-form">
+                        <form class="contact-form" action="/form-submission" method="POST">
                             <h3 class="title mb-3">Get In Touch</h3>
                             <div class="row gy-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="fname" class="form-label">First Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="fname" type="text" class="form-control form--control" minlength="2"
-                                            maxlength="20" pattern="[A-Za-z]+" required></input>
+                                        <input id="fname" type="text" name="fname" class="form-control form--control" minlength="2"
+                                            maxlength="20" pattern=pattern="[A-Za-z ]+" required></input>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lname" class="form-label">Last Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="lname" type="text" class="form-control form--control" minlength="2"
-                                            maxlength="20" pattern="[a-zA-Z]+"></input>
+                                        <input id="lname" type="text" name="lname" class="form-control form--control" minlength="2"
+                                            maxlength="20" pattern="[A-Za-z ]+" required></input>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email Address <span
                                                 class="text--danger">*</span></label>
-                                        <input id="email" type="email" class="form-control form--control"
+                                        <input id="email" type="email" name="email" class="form-control form--control"
                                             pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                                     <div class="form-group">
                                         <label for="tel" class="form-label">Phone Number <span
                                                 class="text--danger">*</span></label>
-                                        <input id="phone" type="number" class="form-control form--control"
+                                        <input id="phone" type="number" name="phone" class="form-control form--control"
                                             pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required></input>
                                     </div>
                                 </div>
@@ -165,11 +165,11 @@
                                     <div class="form-group">
                                         <label for="msg" class="form-label">Your Message <span
                                                 class="text--danger">*</span></label>
-                                        <textarea id="msg" class="form-control form--control" required></textarea>
+                                        <textarea id="msg" name="msg" class="form-control form--control" required></textarea>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <button class="cmn--btn active">Send Message</button>
+                                    <button type="submit" class="cmn--btn active">Send Message</button>
                                 </div>
                             </div>
                         </form>
