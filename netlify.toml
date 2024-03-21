@@ -3,6 +3,6 @@
   node_bundler = "esbuild"
 [[redirects]]
   force = true
-  from = "/index/*"
+  from = "/api/*"
   status = 200
-  to = "/.netlify/functions/index/:splat"
+  to = "/.netlify/functions/api/:splat"
