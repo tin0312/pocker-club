@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import nodemailer from "nodemailer";
+import serverless from "serverless-http";
 
 // Create an Express application
 const app = express();
@@ -81,3 +82,5 @@ async function sendEmail(fname, lname, email, phone, msg) {
   // Send the email
   await transporter.sendMail(mailOptions);
 }
+
+export const handler = serverless(app);

@@ -1,0 +1,10 @@
+[build]
+  command = "node index.js" 
+  functions = "functions"    
+  publish = "."            
+
+[[redirects]]
+  force = true
+  from = "/api/*"
+  status = 200
+  to = "/.netlify/functions/api/:splat"
