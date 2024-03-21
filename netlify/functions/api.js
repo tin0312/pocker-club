@@ -12,8 +12,8 @@ const router = Router();
 //Parse request body
 router.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files from the root directory
-const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(__dirname));
+const rootDir = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(rootDir));
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
