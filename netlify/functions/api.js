@@ -67,5 +67,4 @@ async function sendEmail(fname, lname, email, phone, msg) {
 }
 app.use('/.netlify/functions/api', router);
 
-export default app;
 export const handler = serverless(app);
