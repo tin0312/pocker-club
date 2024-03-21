@@ -64,6 +64,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
   // Send the email
   await transporter.sendMail(mailOptions);
 }
-app.use('/.netlify/functions/api', router);
+
+app.use('/functions/api', router);
 
 export const handler = serverless(app);
