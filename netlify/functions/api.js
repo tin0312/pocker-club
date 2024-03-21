@@ -1,4 +1,5 @@
-import express, { Router } from "express";
+import express from "express";
+import { Router } from "express";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -17,7 +18,7 @@ api.use(express.static(__dirname));
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
-  // Extract form data from the request body
+  // Extract form data from the request body 
   const { fname, lname, email, phone, msg } = req.body;
   // Send email using Nodemailer
   sendEmail(fname, lname, email, phone, msg)
@@ -64,11 +65,6 @@ async function sendEmail(fname, lname, email, phone, msg) {
   // Send the email
   await transporter.sendMail(mailOptions);
 }
-// Start the server
-// const port = process.env.PORT || 3000;
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
-api.use("/api/", router);
+api.use("/.netlify/functions/api", router);
 
 export const handler = serverless(api);
