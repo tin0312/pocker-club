@@ -6,7 +6,7 @@ import { dirname } from "path";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 
-const api = express();
+const app = express();
 const router = Router();
 
 //Parse request body
@@ -14,7 +14,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files from the root directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-api.use(express.static(__dirname));
+app.use(express.static(__dirname));
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
@@ -65,6 +65,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
   // Send the email
   await transporter.sendMail(mailOptions);
 }
-api.use("/api/", router);
+app.use('/.netlify/functions/api', router);
 
-export const handler = serverless(api);
+export default app;
+export const handler = serverless(app);
