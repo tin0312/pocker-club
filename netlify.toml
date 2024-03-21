@@ -1,7 +1,5 @@
 [build]
-  command = "node index.js" 
-  functions = "functions"    
-  publish = "."            
+  functions = "netlify/functions"
 
 [[redirects]]
   force = true
