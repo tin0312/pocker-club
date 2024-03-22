@@ -12,12 +12,12 @@ const router = Router();
 //Parse request body
 router.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files from the root directory
-const rootDir = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(rootDir));
+// const rootDir = dirname(fileURLToPath(import.meta.url));
+// app.use(express.static(rootDir));
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
-  // Extract form data from the request body 
+  // Extract form data from the request body
   const { fname, lname, email, phone, msg } = req.body;
   // Send email using Nodemailer
   sendEmail(fname, lname, email, phone, msg)
@@ -65,6 +65,6 @@ async function sendEmail(fname, lname, email, phone, msg) {
   await transporter.sendMail(mailOptions);
 }
 
-app.use('/functions/api', router);
+app.use("/api/", router);
 
 export const handler = serverless(app);
