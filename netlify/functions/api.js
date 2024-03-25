@@ -1,19 +1,15 @@
 import express from "express";
 import { Router } from "express";
 import bodyParser from "body-parser";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
+import path from "path";
 
 const app = express();
 const router = Router();
 
 //Parse request body
-router.use(bodyParser.urlencoded({ extended: true }));
-// Serve static files from the root directory
-// const rootDir = dirname(fileURLToPath(import.meta.url));
-// app.use(express.static(rootDir));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
@@ -23,7 +19,7 @@ router.post("/form-submission", (req, res) => {
   sendEmail(fname, lname, email, phone, msg)
     .then(() => {
       console.log("Email sent successfully!");
-      res.send("Form submitted successfully!");
+      res.redirect("/success.html");
     })
     .catch((error) => {
       console.error("Error sending email:", error);
