@@ -19,7 +19,7 @@ router.post("/form-submission", (req, res) => {
   sendEmail(fname, lname, email, phone, msg)
     .then(() => {
       console.log("Email sent successfully!");
-      res.redirect("/success.html");
+      res.redirect("/confirmation.html");
     })
     .catch((error) => {
       console.error("Error sending email:", error);
