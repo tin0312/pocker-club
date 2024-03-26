@@ -8,24 +8,41 @@ import path from "path";
 const app = express();
 const router = Router();
 
+let isSubmitted = false;
+
 //Parse request body
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Handle access to confirmation page
+app.get("/confirmation.html", (req, res) => {
+  if (isSubmitted){
+    res.sendFile(path.join(__dirname, "../../../../../dist/confirmation.html"));
+  } else {
+    res.redirect("/");
+  
+  }
+});
+
 // Handle submission route
 router.post("/form-submission", (req, res) => {
-  // Extract form data from the request body
+  isSubmitted = true;
+  // Extract form data from the request bsody
   const { fname, lname, email, phone, msg } = req.body;
   // Send email using Nodemailer
   sendEmail(fname, lname, email, phone, msg)
     .then(() => {
       console.log("Email sent successfully!");
       res.redirect("/confirmation.html");
+     setTimeout(()=> {
+      isSubmitted = false;
+     }, 3000)
     })
     .catch((error) => {
       console.error("Error sending email:", error);
       res.status(500).send("Failed to submit form. Please try again later.");
     });
 });
+
 
 // Set up Email services
 async function sendEmail(fname, lname, email, phone, msg) {
