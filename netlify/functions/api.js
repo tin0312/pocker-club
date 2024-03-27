@@ -15,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle access to confirmation page
 app.get("/confirmation.html", (req, res) => {
-  const rootDirectory = process.env.DEPLOY_PRIME_URL ? './' : '/Users/justinhnt/pocker_club';
+  const rootDirectory = process.env.DEPLOY_PRIME_URL ? process.env.NETLIFY_ROOT_DIRECTORY : process.env.LOCAL_ROOT_DIRECTORY;
+
 
 console.log('Root directory:', rootDirectory);
   if (isSubmitted){

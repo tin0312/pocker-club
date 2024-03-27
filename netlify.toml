@@ -5,6 +5,10 @@
   external_node_modules = ["express"]
   node_bundler = "esbuild"
 
+[build.environment]
+  NETLIFY_ROOT_DIRECTORY = "main--pokertest1.netlify.app"
+
+
 [[redirects]]
   force = true
   from = "/api/*"
