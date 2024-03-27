@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Handle access to confirmation page
 app.get("/confirmation.html", (req, res) => {
   if (isSubmitted){
-    res.sendFile(path.join(process.cwd(), "dist/confirmation.html"))
+    res.sendFile(path.resolve(__dirname, '..', '..', '..', '..', '..', 'dist', 'confirmation.html'));
   } else {
     res.redirect("/");
   
