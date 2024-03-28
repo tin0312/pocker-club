@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 app.get("/confirmation.html", (req, res) => {
     if(isSubmitted){
-      res.sendFile("confirmation.html", { root: "./dist" });   
+      res.sendFile("confirmation.html", { root: "dist" });   
     } else {
       res.redirect("/");
     } 
