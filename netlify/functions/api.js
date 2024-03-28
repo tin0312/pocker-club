@@ -15,12 +15,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle access to confirmation page
 app.get("/confirmation.html", (req, res) => {
-  const rootDirectory = process.env.DEPLOY_PRIME_URL ? process.env.NETLIFY_ROOT_DIRECTORY : process.env.LOCAL_ROOT_DIRECTORY;
+  const rootDirectory = path.join(__dirname, "../../../../..");
 
 
 console.log('Root directory:', rootDirectory);
   if (isSubmitted){
-    res.sendFile('dist/confirmation.html', { root: rootDirectory });
+    res.sendFile('/dist/confirmation.html', { root: rootDirectory });
   } else {
     res.redirect("/");
   
