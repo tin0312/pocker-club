@@ -33,7 +33,7 @@ router.post("/form-submission", (req, res) => {
     sendEmail(fname, lname, email, phone, msg)
         .then(() => {
             console.log("Email sent successfully!");
-            res.redirect("/confirmation");
+            res.redirect("/confirmation.html");
             setTimeout(() => {
                 isSubmitted = false;
             }, 3000);
