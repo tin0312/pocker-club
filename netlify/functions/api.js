@@ -14,18 +14,25 @@ let isSubmitted = false;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle access to confirmation page
-app.get("/confirmation.html", (req, res) => {
-  const rootDirectory = path.join(__dirname, "../../../../..");
+// app.get("/confirmation.html", (req, res) => {
+//   const rootDirectory = path.join(__dirname, "../../../../..");
 
 
-console.log('Root directory:', rootDirectory);
-  if (isSubmitted){
-    res.sendFile('/dist/confirmation.html', { root: rootDirectory });
-  } else {
-    res.redirect("/");
+// console.log('Root directory:', rootDirectory);
+//   if (isSubmitted){
+//     res.sendFile('/dist/confirmation.html', { root: rootDirectory });
+//   } else {
+//     res.redirect("/");
   
-  }
-});
+//   }
+// });
+app.get("/confirmation.html", (req, res) => {
+    if(isSubmitted){
+      res.sendFile("confirmation.html", { root: "./dist" });   
+    } else {
+      res.redirect("/");
+    } 
+})
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
@@ -83,5 +90,6 @@ async function sendEmail(fname, lname, email, phone, msg) {
 }
 
 app.use("/api/", router);
+
 
 export const handler = serverless(app);
