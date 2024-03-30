@@ -19,7 +19,10 @@ app.get("/confirmation.html", (req, res) => {
     try {
         if (isSubmitted) {
             // Serve confirmation.html if isSubmitted is true
-            const resolved = (process.env.LAMBDA_TASK_ROOT)? path.resolve(process.env.LAMBDA_TASK_ROOT, "../../../dist/confirmation.html"):path.resolve(__dirname, "../../../dist/confirmation.html")
+            const resolved = process.env.LAMBDA_TASK_ROOT
+            ? path.resolve(process.env.LAMBDA_TASK_ROOT, "../../../confirmation.html")
+            : path.resolve(__dirname, "../../../dist/confirmation.html");
+        
             res.sendFile(resolved);
         } else {
             // Redirect to home page if isSubmitted is false
