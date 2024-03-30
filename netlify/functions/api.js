@@ -15,12 +15,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle access to confirmation page
 app.get("/confirmation.html", (req, res) => {
-    if (isSubmitted) {
-        // Serve confirmation.html if isSubmitted is true
-        res.sendFile("confirmation.html", { root: "dist" });
-    } else {
-        // Redirect to home page if isSubmitted is false
-        res.redirect("/");
+    try {
+        if (isSubmitted) {
+            // Serve confirmation.html if isSubmitted is true
+            const filePath = path.resolve(__dirname, '..','..','..', '..', '..', 'dist', 'confirmation.html');
+
+            res.sendFile(filePath);
+        } else {
+            // Redirect to home page if isSubmitted is false
+            res.redirect("/");
+        }
+    } catch (error) {
+        console.error("Error reading confirmation.html:", error);
+        res.status(500).send("Failed to load confirmation page.");
     }
 });
 

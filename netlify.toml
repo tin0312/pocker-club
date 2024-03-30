@@ -15,4 +15,4 @@
   force = true
   from = "/confirmation.html"
   status = 200
-  to = "/.netlify/functions/api/confirmation.html"
+  to = "/.netlify/functions/api/:splat"
