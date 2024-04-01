@@ -55,14 +55,14 @@ async function sendEmail(fname, lname, email, phone, msg) {
     service: "gmail",
     auth: {
       user: "justinhoang0312@gmail.com",
-      pass: "bftd rapg glnw zeyh",
+      pass: process.env.EMAIL_PASS,
     },
   });
 
   // Email message options
   let adminMailOptions = {
     from: email,
-    to: "justinhoang0312@gmail.com ",
+    to: process.env.EMAIL_APP,
     subject: "Booking",
     html: `
             <div class="container">
