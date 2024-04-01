@@ -10,6 +10,10 @@ const router = Router();
 
 let isSubmitted = false;
 
+//serve static files
+
+app.use(express.static(path.resolve(__dirname, "../../../../../../dist")));
+
 // Parse request body
 app.use(bodyParser.urlencoded({ extended: true }));
 
