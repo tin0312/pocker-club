@@ -54,7 +54,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "justinhoang0312@gmail.com",
+      user: process.env.EMAIL_APP,
       pass: process.env.EMAIL_PASS,
     },
   });
