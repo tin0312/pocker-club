@@ -3,7 +3,6 @@ import { Router } from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
-import path from "path";
 
 const app = express();
 const router = Router();
@@ -37,6 +36,7 @@ router.post("/form-submission", (req, res) => {
     .then(() => {
       console.log("Email sent successfully!");
       res.redirect("/confirmation");
+
       setTimeout(() => {
         isSubmitted = false;
       }, 3000);
@@ -59,7 +59,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
   });
 
   // Email message options
-  let mailOptions = {
+  let adminMailOptions = {
     from: email,
     to: "justinhoang0312@gmail.com",
     subject: "Booking",
@@ -77,8 +77,27 @@ async function sendEmail(fname, lname, email, phone, msg) {
         `,
   };
 
+  let userMailOption = {
+    from: "justinhoang0312@gmail.com",
+    to: email,
+    subject: "Booking",
+    html: `
+    <div class="container">
+    <h2 class="title">Booking Confirmation</h2>
+    <p class="info">Thank you for booking with us!</p>
+    <div class="message">
+        <p>We have received your booking request and will get back to you shortly.</p>
+    </div>
+</div>
+    
+    `,
+  };
+
   // Send the email
-  await transporter.sendMail(mailOptions);
+  await Promise.all([
+    transporter.sendMail(userMailOption),
+    transporter.sendMail(adminMailOptions),
+  ]);
 }
 
 // Use the router middleware for routes under /api/
