@@ -4,15 +4,12 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 import path from "path";
+import fs from "fs";
 
 const app = express();
 const router = Router();
 
 let isSubmitted = false;
-
-//serve static files
-
-app.use(express.static(path.resolve(__dirname, "../../../../../../dist")));
 
 // Parse request body
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +19,10 @@ app.get("/confirmation", (req, res) => {
   try {
     if (isSubmitted) {
       res.sendFile(
-        path.resolve(__dirname, "../../../../../dist/confirmation.html")
+        path.resolve(
+          process.env.LAMBDA_TASK_ROOT,
+          "../../../dist/confirmation.html"
+        )
       );
     } else {
       // Redirect to home page if isSubmitted is false
