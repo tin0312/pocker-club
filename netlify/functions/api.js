@@ -4,7 +4,6 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 import path from "path";
-import fs from "fs";
 
 const app = express();
 const router = Router();
@@ -14,33 +13,16 @@ let isSubmitted = false;
 // Parse request body
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Define the path to the confirmation.html file
-const confirmationFilePath = path.resolve(
-  __dirname,
-  "../../../../../dist/confirmation.html"
-);
-
 // Handle access to confirmation page
 app.get("/confirmation", (req, res) => {
   try {
     if (isSubmitted) {
-      // Read the confirmation.html file from disk
-      fs.readFile(confirmationFilePath, "utf8", (err, data) => {
-        if (err) {
-          console.error("Error reading confirmation.html:", err);
-          res.status(500).send("Failed to load confirmation page.");
-        } else {
-          // Send the file content as the response
-          res.setHeader("Content-Type", "text/html");
-          res.status(200).send(data);
-        }
-      });
+      res.redirect("/confirmation.html");
     } else {
       // Redirect to home page if isSubmitted is false
       res.redirect("/");
     }
   } catch (error) {
-    console.error("Error reading confirmation.html:", error);
     res.status(500).send("Failed to load confirmation page.");
   }
 });
