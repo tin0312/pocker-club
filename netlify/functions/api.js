@@ -65,32 +65,36 @@ async function sendEmail(fname, lname, email, phone, msg) {
     to: process.env.EMAIL_APP,
     subject: "Booking",
     html: `
-            <div class="container">
-                <h2 class="title">New appointment</h2>
-                <p class="info"><strong>First Name:</strong> ${fname}</p>
-                <p class="info"><strong>Last Name:</strong> ${lname}</p>
-                <p class="info"><strong>Email:</strong> ${email}</p>
-                <p class="info"><strong>Phone:</strong> ${phone}</p>
-                <div class="message">
-                    <p>${msg}</p>
-                </div>
-            </div>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+    <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
+    <div style="margin-bottom: 20px;">
+        <p style="margin: 20px 0;"><strong>First Name:</strong> ${fname}</p>
+        <p style="margin: 20px 0;"><strong>Last Name:</strong> ${lname}</p>
+        <p style="margin: 20px 0;"><strong>Email:</strong> ${email}</p>
+        <p style="margin: 30px 0;"><strong>Phone:</strong> ${phone}</p>
+    </div>
+    <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
+        <p>${msg}</p>
+    </div>
+</div>
         `,
   };
 
   let userMailOption = {
     from: process.env.EMAIL_APP,
     to: email,
-    subject: "Booking",
+    subject: "Omega Poker Club - Booking",
     html: `
-      <div class="container">
-        <h2 class="title">Booking Confirmation</h2>
-        <p class="info">Thank you for booking with us!</p>
-        <div class="message">
-          <p>We have received your booking request and will get back to you shortly.</p>
-        </div>
-      </div>
-      <p style="text-align: center;">Toronto Omega Poker - TOP club</p>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #333; text-align: center; margin-bottom: 20px;">Booking Confirmation</h2>
+    <p style="color: #666; text-align: center; margin-bottom: 50px;">Thank you for booking with us!</p>
+    <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
+        <p style="color: #333; margin: 0;">We have received your booking request and will get back to you shortly.
+        </p>
+    </div>
+    <p style="color:#14343b; margin-bottom: 20px;font-weight: bold; font-style: italic;">Toronto Omega Poker - TOP
+        Club</p>
+</div>
     `,
   };
 
