@@ -3,8 +3,7 @@ import { Router } from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
-import path from "path";
-import fs from "fs";
+import "dotenv/config";
 
 const app = express();
 const router = Router();
@@ -15,62 +14,57 @@ let isSubmitted = false;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle access to confirmation page
-app.get("/confirmation.html", (req, res) => {
-    try {
-        if (isSubmitted) {
-            // Serve confirmation.html if isSubmitted is true
-            const resolved = process.env.LAMBDA_TASK_ROOT
-            ? path.resolve(process.env.LAMBDA_TASK_ROOT, "../../../confirmation.html")
-            : path.resolve(__dirname, "../../../dist/confirmation.html");
-        
-            res.sendFile(resolved);
-        } else {
-            // Redirect to home page if isSubmitted is false
-            res.redirect("/");
-        }
-    } catch (error) {
-        console.error("Error reading confirmation.html:", error);
-        res.status(500).send("Failed to load confirmation page.");
+app.get("/confirmation", (req, res) => {
+  try {
+    if (isSubmitted) {
+      res.redirect("/confirmation.html");
+    } else {
+      // Redirect to home page if isSubmitted is false
+      res.redirect("/");
     }
+  } catch (error) {
+    res.status(500).send("Failed to load confirmation page.");
+  }
 });
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
-    isSubmitted = true;
-    // Extract form data from the request body
-    const { fname, lname, email, phone, msg } = req.body;
-    // Send email using Nodemailer
-    sendEmail(fname, lname, email, phone, msg)
-        .then(() => {
-            console.log("Email sent successfully!");
-            res.redirect("/confirmation.html");
-            setTimeout(() => {
-                isSubmitted = false;
-            }, 3000);
-        })
-        .catch((error) => {
-            console.error("Error sending email:", error);
-            res.status(500).send("Failed to submit form. Please try again later.");
-        });
+  isSubmitted = true;
+  // Extract form data from the request body
+  const { fname, lname, email, phone, msg } = req.body;
+  // Send email using Nodemailer
+  sendEmail(fname, lname, email, phone, msg)
+    .then(() => {
+      console.log("Email sent successfully!");
+      res.redirect("/confirmation");
+
+      setTimeout(() => {
+        isSubmitted = false;
+      }, 3000);
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+      res.status(500).send("Failed to submit form. Please try again later.");
+    });
 });
 
 // Set up Email services
 async function sendEmail(fname, lname, email, phone, msg) {
-    // Create a Nodemailer transporter
-    let transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "justinhoang0312@gmail.com",
-            pass: "bftd rapg glnw zeyh",
-        },
-    });
+  // Create a Nodemailer transporter
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_APP,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
-    // Email message options
-    let mailOptions = {
-        from: email,
-        to: "justinhoang0312@gmail.com",
-        subject: "Booking",
-        html: `
+  // Email message options
+  let adminMailOptions = {
+    from: email,
+    to: process.env.EMAIL_APP,
+    subject: "Booking",
+    html: `
             <div class="container">
                 <h2 class="title">New appointment</h2>
                 <p class="info"><strong>First Name:</strong> ${fname}</p>
@@ -82,10 +76,29 @@ async function sendEmail(fname, lname, email, phone, msg) {
                 </div>
             </div>
         `,
-    };
+  };
 
-    // Send the email
-    await transporter.sendMail(mailOptions);
+  let userMailOption = {
+    from: process.env.EMAIL_APP,
+    to: email,
+    subject: "Booking",
+    html: `
+      <div class="container">
+        <h2 class="title">Booking Confirmation</h2>
+        <p class="info">Thank you for booking with us!</p>
+        <div class="message">
+          <p>We have received your booking request and will get back to you shortly.</p>
+        </div>
+      </div>
+      <p style="text-align: center;">Toronto Omega Poker - TOP club</p>
+    `,
+  };
+
+  // Send the email
+  await Promise.all([
+    transporter.sendMail(userMailOption),
+    transporter.sendMail(adminMailOptions),
+  ]);
 }
 
 // Use the router middleware for routes under /api/
