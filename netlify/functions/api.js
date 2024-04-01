@@ -65,7 +65,8 @@ async function sendEmail(fname, lname, email, phone, msg) {
     to: process.env.EMAIL_APP,
     subject: "Omega Poker Club - Booking",
     html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+    <div
+    style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
     <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
     <div style="margin-bottom: 20px;">
         <p style="margin: 20px 0;"><strong>First Name:</strong> ${fname}</p>
@@ -75,6 +76,11 @@ async function sendEmail(fname, lname, email, phone, msg) {
     </div>
     <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
         <p>${msg}</p>
+    </div>
+
+    <div style="margin-top: 50px; ">
+        <p style="font-weight: bold; font-style: italic;color:#14343b">Toronto Omega Poker - TOP
+            CLUB</p>
     </div>
 </div>
         `,
@@ -86,15 +92,16 @@ async function sendEmail(fname, lname, email, phone, msg) {
     subject: "Omega Poker Club - Booking",
     html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-    <h2 style="color: #333; text-align: center; margin-bottom: 20px;">Booking Confirmation</h2>
-    <p style="color: #666; text-align: center; margin-bottom: 50px;">Thank you for booking with us!</p>
-    <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
-        <p style="color: #333; margin: 0;">We have received your booking request and will get back to you shortly.
-        </p>
+        <h2 style="color: #333; text-align: center; margin-bottom: 20px;">Booking Confirmation</h2>
+        <p style="color: #666; text-align: center; margin-bottom: 50px;">Thank you for booking with us!</p>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
+            <p style="color: #333; margin: 0;text-align: center;">We have received your booking request and will get
+                back to you shortly.
+            </p>
+        </div>
+        <p style="color:#14343b; margin-bottom: 20px;font-weight: bold; font-style: italic;">Toronto Omega Poker - TOP
+            club</p>
     </div>
-    <p style="color:#14343b; margin-bottom: 20px;font-weight: bold; font-style: italic;">Toronto Omega Poker - TOP
-        Club</p>
-</div>
     `,
   };
 
