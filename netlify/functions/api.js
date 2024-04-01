@@ -63,7 +63,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
   let adminMailOptions = {
     from: email,
     to: process.env.EMAIL_APP,
-    subject: "Booking",
+    subject: "Omega Poker Club - Booking",
     html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
     <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
