@@ -53,8 +53,8 @@ async function sendEmail(fname, lname, email, phone, msg) {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "justinhoang0312@gmail.com",
-      pass: "bftd rapg glnw zeyh",
+      user: process.env.EMAIL_APP,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
@@ -78,18 +78,18 @@ async function sendEmail(fname, lname, email, phone, msg) {
   };
 
   let userMailOption = {
-    from: "justinhoang0312@gmail.com",
+    from: process.env.EMAIL_APP,
     to: email,
     subject: "Booking",
     html: `
-    <div class="container">
-    <h2 class="title">Booking Confirmation</h2>
-    <p class="info">Thank you for booking with us!</p>
-    <div class="message">
-        <p>We have received your booking request and will get back to you shortly.</p>
-    </div>
-</div>
-    
+      <div class="container">
+        <h2 class="title">Booking Confirmation</h2>
+        <p class="info">Thank you for booking with us!</p>
+        <div class="message">
+          <p>We have received your booking request and will get back to you shortly.</p>
+        </div>
+      </div>
+      <p style="text-align: center;">Toronto Omega Poker - TOP club</p>
     `,
   };
 
