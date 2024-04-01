@@ -3,6 +3,7 @@ import { Router } from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
+import "dotenv/config";
 
 const app = express();
 const router = Router();
@@ -61,7 +62,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
   // Email message options
   let adminMailOptions = {
     from: email,
-    to: "justinhoang0312@gmail.com",
+    to: process.env.EMAIL_APP,
     subject: "Booking",
     html: `
             <div class="container">
