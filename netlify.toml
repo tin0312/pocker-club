@@ -13,7 +13,7 @@
 
 [[redirects]]
   force = true
-  from = "/confirmation*"
+  from = "/confirmation"
   status = 200
   to = "/.netlify/functions/api/:splat"
 

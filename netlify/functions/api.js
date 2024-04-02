@@ -13,8 +13,8 @@ let isSubmitted = false;
 // Parse request body
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Function to handle confirmation page access
-function handleConfirmationPage(req, res) {
+// Handle access to confirmation page
+app.get("/confirmation", (req, res) => {
   try {
     if (isSubmitted) {
       res.redirect("/confirmation.html");
@@ -25,13 +25,7 @@ function handleConfirmationPage(req, res) {
   } catch (error) {
     res.status(500).send("Failed to load confirmation page.");
   }
-}
-
-// Handle access to confirmation page
-app.get("/confirmation", handleConfirmationPage);
-
-// Handle access to confirmation page
-app.get("/confirmation.html", handleConfirmationPage);
+});
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
@@ -46,7 +40,7 @@ router.post("/form-submission", (req, res) => {
 
       setTimeout(() => {
         isSubmitted = false;
-      }, 3000);
+      }, 6000);
     })
     .catch((error) => {
       console.error("Error sending email:", error);
@@ -71,8 +65,7 @@ async function sendEmail(fname, lname, email, phone, msg) {
     to: process.env.EMAIL_APP,
     subject: "Omega Poker Club - Booking",
     html: `
-    <div
-    style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
     <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
     <div style="margin-bottom: 20px;">
         <p style="margin: 20px 0;"><strong>First Name:</strong> ${fname}</p>
@@ -82,11 +75,6 @@ async function sendEmail(fname, lname, email, phone, msg) {
     </div>
     <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
         <p>${msg}</p>
-    </div>
-
-    <div style="margin-top: 50px; ">
-        <p style="font-weight: bold; font-style: italic;color:#14343b">Toronto Omega Poker - TOP
-            CLUB</p>
     </div>
 </div>
         `,
