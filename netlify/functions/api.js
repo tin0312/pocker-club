@@ -13,8 +13,8 @@ let isSubmitted = false;
 // Parse request body
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Function to handle confirmation page access
-function handleConfirmationPage(req, res) {
+// Handle access to confirmation page
+app.get("/confirmation", (req, res) => {
   try {
     if (isSubmitted) {
       res.redirect("/confirmation.html");
@@ -25,12 +25,7 @@ function handleConfirmationPage(req, res) {
   } catch (error) {
     res.status(500).send("Failed to load confirmation page.");
   }
-}
-
-// Handle access to confirmation page
-app.get("/confirmation", handleConfirmationPage);
-// Handle access to confirmation page
-app.get("/confirmation.html", handleConfirmationPage);
+});
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
