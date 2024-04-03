@@ -10,6 +10,7 @@ import { Twilio } from "twilio";
 const app = express();
 const router = Router();
 let isSubmitted = false;
+let waitlist = [];
 
 const accountSid = "AC1f28e845495a8eb1df7c6e7b440cef40";
 const authToken = "f3716686e347e2c3bb4845ca0351b8ec";
@@ -37,7 +38,11 @@ router.post("/form-submission", (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
- 
+  // Save user info in array
+  const userInfo = { fname, lname, email, phone, partySize, game };
+  waitlist.push(userInfo);
+  console.log(waitlist);
+
   sendEmail(fname, lname, email, phone, partySize, game)
     .then(() => {
       console.log("Email sent successfully!");
@@ -48,7 +53,8 @@ router.post("/form-submission", (req, res) => {
       }, 3000);
       twilioClient.messages
         .create({
-          body: "Text Message from Omega Poker Club",
+        // Log position in waitlist
+          body: `Thank you for booking with us! You are currently in position ${waitlist.length} in the waitlist. We will notify you when a spot becomes available.`,
           from: "+12512929460",
           to: phone,
         })
