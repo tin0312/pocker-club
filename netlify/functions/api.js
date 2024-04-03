@@ -12,8 +12,8 @@ const router = Router();
 let isSubmitted = false;
 let waitlist = [];
 
-const accountSid = "AC1f28e845495a8eb1df7c6e7b440cef40";
-const authToken = "f3716686e347e2c3bb4845ca0351b8ec";
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
 const twilioClient = new Twilio(accountSid, authToken);
 
 // Parse request body
@@ -55,7 +55,7 @@ router.post("/form-submission", (req, res) => {
         .create({
         // Log position in waitlist
           body: `Thank you for booking with us! You are currently in position ${waitlist.length} in the waitlist. We will notify you when a spot becomes available.`,
-          from: "+12512929460",
+          from: process.env.TWILIO_PHONE_NUMBER,
           to: phone,
         })
         .then((message) => console.log(message.sid));
