@@ -9,7 +9,6 @@ import { Twilio } from "twilio";
 
 const app = express();
 const router = Router();
-let waitlist = [];
 let isSubmitted = false;
 
 const accountSid = "AC1f28e845495a8eb1df7c6e7b440cef40";
