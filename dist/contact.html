@@ -53,8 +53,7 @@
         <div class="container">
             <div class="header-bottom">
                 <div class="header-bottom-area align-items-center">
-                    <div class="logo"><a href="index.html"><img src="/images/omega-logo.png"
-                                alt="omega-logo"></a></div>
+                    <div class="logo"><a href="index.html"><img src="/images/omega-logo.png" alt="omega-logo"></a></div>
                     <ul class="menu">
                         <li>
                             <a href="index.html">Home</a>
@@ -127,22 +126,22 @@
                     </div>
                     <div class="col-lg-7">
                         <form class="contact-form" action="/api/form-submission" method="POST">
-                            <h3 class="title mb-3">Get In Touch</h3>
+                            <h3 class="title mb-3">Join The Waitlist</h3>
                             <div class="row gy-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="fname" class="form-label">First Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="fname" type="text" name="fname" class="form-control form--control" minlength="2"
-                                            maxlength="20" pattern=pattern="[A-Za-z ]+" required></input>
+                                        <input id="fname" type="text" name="fname" class="form-control form--control"
+                                            minlength="2" maxlength="20" pattern="[A-Za-z ]+" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lname" class="form-label">Last Name <span
                                                 class="text--danger">*</span></label>
-                                        <input id="lname" type="text" name="lname" class="form-control form--control" minlength="2"
-                                            maxlength="20" pattern="[A-Za-z ]+" required></input>
+                                        <input id="lname" type="text" name="lname" class="form-control form--control"
+                                            minlength="2" maxlength="20" pattern="[A-Za-z ]+" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -158,21 +157,33 @@
                                         <label for="tel" class="form-label">Phone Number <span
                                                 class="text--danger">*</span></label>
                                         <input id="phone" type="number" name="phone" class="form-control form--control"
-                                            pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required></input>
+                                            pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="msg" class="form-label">Your Message <span
+                                        <label for="game" class="form-label">Select Game</label>
+                                        <select id="game" name="game" class="form-control form--control">
+                                            <option value="NLH">NLH (No limit Texas Hold’em)</option>
+                                            <option value="PLO">PLO (Pot limit Omaha)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="party-size" class="form-label">Party Size <span
                                                 class="text--danger">*</span></label>
-                                        <textarea id="msg" name="msg" class="form-control form--control" required></textarea>
+                                        <input id="party-size" type="number" name="partySize"
+                                            class="form-control form--control" min="1" required>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="cmn--btn active">Send Message</button>
+                                    <button type="submit" class="cmn--btn active">Join</button>
                                 </div>
                             </div>
                         </form>
+
+
                     </div>
                 </div>
             </div>
