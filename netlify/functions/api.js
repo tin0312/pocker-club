@@ -22,17 +22,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle submission route
 router.post("/form-submission", (req, res) => {
+  isSubmitted=true;
+  res.redirect("/confirmation.html")
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
 
   addUserToFirestore(fname, lname, email, phone, partySize, game);
   sendEmail(fname, lname, email, phone, partySize, game)
     .then(() => {
-      console.log("Email sent successfully!");
-      // Set isSubmitted to true
-      isSubmitted = true;
-      // Redirect to confirmation page
-      res.redirect("/confirmation");
       // Send Twilio message
       twilioClient.messages
         .create({
