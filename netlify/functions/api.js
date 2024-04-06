@@ -4,22 +4,55 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 import "dotenv/config";
-// import mysql from 'mysql2/promise';
 import { Twilio } from "twilio";
+import { db } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
+import { nanoid } from "nanoid";
 
 const app = express();
 const router = Router();
 let isSubmitted = false;
-let waitlist = [];
-
-const accountSid = process.env.ACCOUNT_SID;
-const authToken = process.env.AUTH_TOKEN;
+const accountSid = process.env.ACCOUNT_ID;
+const authToken = process.env.ACCOUNT_TOKEN;
 const twilioClient = new Twilio(accountSid, authToken);
 
-// Parse request body
+// Content parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Handle access to confirmation page
+// Handle submission route
+router.post("/form-submission", (req, res) => {
+  // Extract form data from the request body
+  const { fname, lname, email, phone, partySize, game } = req.body;
+
+  addUserToFirestore(fname, lname, email, phone, partySize, game);
+  sendEmail(fname, lname, email, phone, partySize, game)
+    .then(() => {
+      console.log("Email sent successfully!");
+      // Set isSubmitted to true
+      isSubmitted = true;
+      // Redirect to confirmation page
+      res.redirect("/confirmation");
+      // Send Twilio message
+      twilioClient.messages
+        .create({
+          body: `Thank you for booking with us! You are currently in position ${waitlist.length} in the waitlist. We will notify you when a spot becomes available.`,
+          from: process.env.TWILIO_PHONE_NUMBER,
+          to: phone,
+        })
+        .then((message) => console.log(message.sid))
+        .catch((error) =>
+          console.error("Error sending Twilio message:", error)
+        );
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+      res.status(500).send("Failed to submit form. Please try again later.");
+    });
+});
+
+//Routes handling
+
 app.get("/confirmation", (req, res) => {
   try {
     if (isSubmitted) {
@@ -33,38 +66,23 @@ app.get("/confirmation", (req, res) => {
   }
 });
 
-// Handle submission route
-router.post("/form-submission", (req, res) => {
-  isSubmitted = true;
-  // Extract form data from the request body
-  const { fname, lname, email, phone, partySize, game } = req.body;
-  // Save user info in array
-  const userInfo = { fname, lname, email, phone, partySize, game };
-  waitlist.push(userInfo);
-  console.log(waitlist);
-
-  sendEmail(fname, lname, email, phone, partySize, game)
-    .then(() => {
-      console.log("Email sent successfully!");
-      res.redirect("/confirmation");
-
-      setTimeout(() => {
-        isSubmitted = false;
-      }, 3000);
-      twilioClient.messages
-        .create({
-        // Log position in waitlist
-          body: `Thank you for booking with us! You are currently in position ${waitlist.length} in the waitlist. We will notify you when a spot becomes available.`,
-          from: process.env.TWILIO_PHONE_NUMBER,
-          to: phone,
-        })
-        .then((message) => console.log(message.sid));
-    })
-    .catch((error) => {
-      console.error("Error sending email:", error);
-      res.status(500).send("Failed to submit form. Please try again later.");
+//Add user to waitlist in Firestore
+async function addUserToFirestore(fname, lname, email, phone, partySize, game) {
+  let userId = nanoid();
+  try {
+    await setDoc(doc(db, "waitlist", userId), {
+      fname: fname,
+      lname: lname,
+      email: email,
+      phone: phone,
+      partySize: partySize,
+      game: game,
+      date: Timestamp.fromDate(new Date()),
     });
-});
+  } catch (error) {
+    console.error("Error adding user to Firestore: ", error);
+  }
+}
 
 // Set up Email services
 async function sendEmail(fname, lname, email, phone, partySize, game) {
