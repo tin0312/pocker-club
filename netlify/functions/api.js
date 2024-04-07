@@ -3,19 +3,17 @@ import { Router } from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
-import "dotenv/config";
 import { Twilio } from "twilio";
-import { db } from "./firebase";
-import { doc, setDoc } from "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
-import { nanoid } from "nanoid";
+import "dotenv/config";
+import { saveWaitList, getUserPosition, updatePosition } from "./waitlist";
+
 
 const app = express();
 const router = Router();
-let isSubmitted = false;
 const accountSid = process.env.ACCOUNT_ID;
 const authToken = process.env.ACCOUNT_TOKEN;
 const twilioClient = new Twilio(accountSid, authToken);
+let isSubmitted = false;
 
 // Content parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,14 +24,15 @@ router.post("/form-submission", (req, res) => {
   res.redirect("/confirmation.html")
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
-
-  addUserToFirestore(fname, lname, email, phone, partySize, game);
+  // Get user's position in waitlist
+  const userPosition = getUserPosition();
+  saveWaitList(fname, lname, email, phone, partySize, game);
   sendEmail(fname, lname, email, phone, partySize, game)
     .then(() => {
       // Send Twilio message
       twilioClient.messages
         .create({
-          body: `Thank you for booking with us! You are currently in position ${waitlist.length} in the waitlist. We will notify you when a spot becomes available.`,
+          body: `Thank you for booking with us! You are currently in position ${userPosition} in the waitlist. We will notify you when a spot becomes available.`,
           from: process.env.TWILIO_PHONE_NUMBER,
           to: phone,
         })
@@ -64,7 +63,7 @@ app.get("/confirmation", (req, res) => {
 });
 
 //Add user to waitlist in Firestore
-async function addUserToFirestore(fname, lname, email, phone, partySize, game) {
+async function saveWaitLIst(fname, lname, email, phone, partySize, game) {
   let userId = nanoid();
   try {
     await setDoc(doc(db, "waitlist", userId), {
