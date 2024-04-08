@@ -18,33 +18,36 @@ let isSubmitted = false;
 // Content parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Handle submission route
-router.post("/form-submission", (req, res) => {
-  isSubmitted=true;
-  res.redirect("/confirmation.html")
+router.post("/form-submission", async (req, res) => {
+  isSubmitted = true;
+  res.redirect("/confirmation.html");
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
   // Get user's position in waitlist
-  const userPosition = getUserPosition();
-  saveWaitList(fname, lname, email, phone, partySize, game);
-  sendEmail(fname, lname, email, phone, partySize, game)
-    .then(() => {
-      // Send Twilio message
-      twilioClient.messages
-        .create({
-          body: `Thank you for booking with us! You are currently in position ${userPosition} in the waitlist. We will notify you when a spot becomes available.`,
-          from: process.env.TWILIO_PHONE_NUMBER,
-          to: phone,
-        })
-        .then((message) => console.log(message.sid))
-        .catch((error) =>
-          console.error("Error sending Twilio message:", error)
-        );
-    })
-    .catch((error) => {
-      console.error("Error sending email:", error);
-      res.status(500).send("Failed to submit form. Please try again later.");
-    });
+  try {
+    await saveWaitList(fname, lname, email, phone, partySize, game); // Wait for saveWaitList to complete
+    const userPosition = await getUserPosition(); // Get updated user position
+    sendEmail(fname, lname, email, phone, partySize, game)
+      .then(() => {
+        // Send Twilio message
+        twilioClient.messages
+          .create({
+            body: `\nHi ${fname},\nYou have successfully booked a seat with us. Your current location is ${userPosition} in the waitlist. We will notify you when the seat is ready.`,
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: phone,
+          })
+          .catch((error) =>
+            console.error("Error sending Twilio message:", error)
+          );
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+        res.status(500).send("Failed to submit form. Please try again later.");
+      });
+  } catch (error) {
+    console.error("Error getting user position:", error);
+    res.status(500).send("Failed to submit form. Please try again later.");
+  }
 });
 
 //Routes handling
@@ -61,24 +64,6 @@ app.get("/confirmation", (req, res) => {
     res.status(500).send("Failed to load confirmation page.");
   }
 });
-
-//Add user to waitlist in Firestore
-async function saveWaitLIst(fname, lname, email, phone, partySize, game) {
-  let userId = nanoid();
-  try {
-    await setDoc(doc(db, "waitlist", userId), {
-      fname: fname,
-      lname: lname,
-      email: email,
-      phone: phone,
-      partySize: partySize,
-      game: game,
-      date: Timestamp.fromDate(new Date()),
-    });
-  } catch (error) {
-    console.error("Error adding user to Firestore: ", error);
-  }
-}
 
 // Set up Email services
 async function sendEmail(fname, lname, email, phone, partySize, game) {

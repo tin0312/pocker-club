@@ -8,7 +8,7 @@ let userPosition = 0;
 async function saveWaitList(fname, lname, email, phone, partySize, game){
     let userId = nanoid();
     try{
-        await setDoc(doc(db, "wailist", userId), {
+        await setDoc(doc(db, "waitlist", userId), {
             fname: fname,
             lname: lname,
             email: email,
@@ -26,6 +26,7 @@ async function saveWaitList(fname, lname, email, phone, partySize, game){
 async function getUserPosition(){
     const collectionSnapshot = await getCountFromServer(collection(db, "waitlist"));
     userPosition = collectionSnapshot.data().count;
+    console.log("User position: ", userPosition);
     return userPosition;
 }
 
