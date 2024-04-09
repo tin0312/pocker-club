@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 import { Twilio } from "twilio";
 import "dotenv/config";
-import { saveWaitList, getUserPosition, updatePosition } from "./waitlist";
+import { saveWaitList, getUserPosition } from "./waitlist";
 
 
 const app = express();
@@ -14,6 +14,21 @@ const accountSid = process.env.ACCOUNT_ID;
 const authToken = process.env.ACCOUNT_TOKEN;
 const twilioClient = new Twilio(accountSid, authToken);
 let isSubmitted = false;
+
+
+// Function to send Twilio message with user position
+async function sendTwilioMessage(fname, phone, userPosition) {
+  try {
+    await twilioClient.messages.create({
+      body: `Hi ${fname},\nYou have successfully booked a seat with us. Your current location is ${userPosition} in the waitlist. We will notify you when the seat is ready.`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: phone,
+    });
+    console.log("Twilio message sent successfully.");
+  } catch (error) {
+    console.error("Error sending Twilio message:", error);
+  }
+}
 
 // Content parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,16 +44,7 @@ router.post("/form-submission", async (req, res) => {
     const userPosition = await getUserPosition(); // Get updated user position
     sendEmail(fname, lname, email, phone, partySize, game)
       .then(() => {
-        // Send Twilio message
-        twilioClient.messages
-          .create({
-            body: `\nHi ${fname},\nYou have successfully booked a seat with us. Your current location is ${userPosition} in the waitlist. We will notify you when the seat is ready.`,
-            from: process.env.TWILIO_PHONE_NUMBER,
-            to: phone,
-          })
-          .catch((error) =>
-            console.error("Error sending Twilio message:", error)
-          );
+        sendTwilioMessage(fname, phone, userPosition);
       })
       .catch((error) => {
         console.error("Error sending email:", error);
@@ -127,3 +133,4 @@ app.use("/api", router);
 
 // Export the handler for serverless deployment
 export const handler = serverless(app);
+export {sendTwilioMessage}
