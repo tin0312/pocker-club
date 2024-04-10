@@ -16,11 +16,14 @@ const twilioClient = new Twilio(accountSid, authToken);
 let isSubmitted = false;
 
 
+// Content parsing middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Function to send Twilio message with user position
-async function sendTwilioMessage(fname, phone, userPosition) {
+async function sendTwilioMessage(fname, phone, messageBody) {
   try {
     await twilioClient.messages.create({
-      body: `Hi ${fname},\nYou have successfully booked a seat with us. Your current location is ${userPosition} in the waitlist. We will notify you when the seat is ready.`,
+      body: messageBody,
       from: process.env.TWILIO_PHONE_NUMBER,
       to: phone,
     });
@@ -29,9 +32,6 @@ async function sendTwilioMessage(fname, phone, userPosition) {
     console.error("Error sending Twilio message:", error);
   }
 }
-
-// Content parsing middleware
-app.use(bodyParser.urlencoded({ extended: true }));
 
 router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
@@ -43,13 +43,7 @@ router.post("/form-submission", async (req, res) => {
     await saveWaitList(fname, lname, email, phone, partySize, game); // Wait for saveWaitList to complete
     const userPosition = await getUserPosition(); // Get updated user position
     sendEmail(fname, lname, email, phone, partySize, game)
-      .then(() => {
-        sendTwilioMessage(fname, phone, userPosition);
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-        res.status(500).send("Failed to submit form. Please try again later.");
-      });
+    await sendTwilioMessage(fname, phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`);
   } catch (error) {
     console.error("Error getting user position:", error);
     res.status(500).send("Failed to submit form. Please try again later.");
