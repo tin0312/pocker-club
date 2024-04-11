@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 import { Twilio } from "twilio";
 import "dotenv/config";
-import { saveWaitList, getUserPosition } from "./waitlist";
+import { saveWaitList, getCurrentPosition } from "./waitlist";
 
 
 const app = express();
@@ -40,8 +40,8 @@ router.post("/form-submission", async (req, res) => {
   const { fname, lname, email, phone, partySize, game } = req.body;
   // Get user's position in waitlist
   try {
-    await saveWaitList(fname, lname, email, phone, partySize, game); // Wait for saveWaitList to complete
-    const userPosition = await getUserPosition(); // Get updated user position
+    await saveWaitList(fname, lname, email, phone, partySize, game);
+    const userPosition = await getCurrentPosition();
     sendEmail(fname, lname, email, phone, partySize, game)
     await sendTwilioMessage(fname, phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`);
   } catch (error) {

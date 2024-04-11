@@ -1,15 +1,14 @@
 import { db } from "./firebase";
-import { collection, doc, setDoc, onSnapshot, getDocs,getCountFromServer } from "firebase/firestore";
+import { collection, doc, setDoc, onSnapshot, getDocs, getCountFromServer, updateDoc } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import { sendTwilioMessage } from "./api";
 
-let userPosition;
-
-
-async function saveWaitList(fname, lname, email, phone, partySize, game){
-    let userId = nanoid();
-    try{
+async function saveWaitList(fname, lname, email, phone, partySize, game) {
+    const userId = nanoid();
+    try {
+        const collectionSnapshot = await getCountFromServer(collection(db, "waitlist"));
+        const userPosition = collectionSnapshot.data().count + 1; // Increment count to get position
         await setDoc(doc(db, "waitlist", userId), {
             fname: fname,
             lname: lname,
@@ -18,60 +17,35 @@ async function saveWaitList(fname, lname, email, phone, partySize, game){
             partySize: partySize,
             game: game,
             date: Timestamp.fromDate(new Date()),
-            removed: false
+            position: userPosition // Store user's position in the document
         });
-        console.log("User added to Firestore")
-        userPosition = await getUserPosition(userId);
-        await sendTwilioMessage(fname, phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available!`);
-        } catch (error){
-            console.error("Error adding user to Firestore: ", error);
-        }
+        console.log("User added to Firestore");
+    } catch (error) {
+        console.error("Error adding user to Firestore: ", error);
     }
+}
 
-// loop through the waitlist and get the user position
-async function getUserPosition(userId){
-    try{
-        const querySnapshot = await getDocs(collection(db, "waitlist"));
-        let i = 1;
-        querySnapshot.forEach((doc) => {
-            if(!doc.data().removed){
-                if(doc.id === userId){
-                    userPosition = i;
-                }
-                i++;
-            }
-        });
-    } catch (error){
-        console.error("Error getting user position:", error);
-    }
+// get current position of the user
+async function getCurrentPosition() {
+    const collectionSnapshot = await getCountFromServer(collection(db, "waitlist"));
+    let userPosition = collectionSnapshot.data().count;
+    console.log("User position: ", userPosition);
     return userPosition;
 }
-async function updatePositions() {
-    try {
-        const querySnapshot = await getDocs(collection(db, "waitlist"));
-        const updates = [];
-        let i = 1;
-        querySnapshot.forEach((doc) => {
-            if (!doc.data().removed) {
-                updates.push(setDoc(doc(db, "waitlist", doc.id), {
-                    fname: doc.data().fname,
-                    lname: doc.data().lname,
-                    email: doc.data().email,
-                    phone: doc.data().phone,
-                    partySize: doc.data().partySize,
-                    game: doc.data().game,
-                    date: doc.data().date,
-                    removed: false
-                }));
-                updates.push(sendTwilioMessage(doc.data().fname, doc.data().phone, `Your new position in the waitlist is ${i}.`));
-                i++;
-            }
-        });
-        await Promise.all(updates);
-    } catch (error) {
-        console.error("Error updating user positions:", error);
-    }
+
+async function updateRemainingUsers() {
+    const usersSnapshot = await getDocs(collection(db, "waitlist"));
+    usersSnapshot.forEach(async (userDoc) => {
+        const docId = userDoc.id;
+        const docData = userDoc.data();
+        const { fname, phone, position } = docData;
+        const newPosition = position - 1;
+        const docRef = doc(db, "waitlist", docId);
+        await updateDoc(docRef, { position: newPosition });
+        await sendTwilioMessage(fname, phone, `Hi ${fname}, \nYour position in the waitlist has been updated to ${newPosition}.`);
+    });
 }
+
 
 async function listenForDeletions() {
     try {
@@ -82,8 +56,8 @@ async function listenForDeletions() {
                     const deletedDocId = change.doc.id;
                     console.log("Document deleted:", deletedDocId);
                     console.log("Deleted data:", deletedData);
-                    await updatePositions();
                     await sendTwilioMessage(deletedData.fname, deletedData.phone, "Your table is ready. Please come to the front desk to be seated.");
+                    await updateRemainingUsers();
                 }
             });
         });
@@ -97,5 +71,4 @@ async function listenForDeletions() {
 // Call the function to start listening for updates
 listenForDeletions();
 
-export { saveWaitList, getUserPosition, updatePositions };
-
+export { saveWaitList, getCurrentPosition };
