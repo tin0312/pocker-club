@@ -42,7 +42,7 @@ router.post("/form-submission", async (req, res) => {
   try {
     await saveWaitList(fname, lname, email, phone, partySize, game);
     const userPosition = await getCurrentPosition();
-    sendEmail(fname, lname, email, phone, partySize, game)
+    await sendEmail(fname, lname, email, phone, partySize, game)
     await sendTwilioMessage(phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`);
   } catch (error) {
     console.error("Error getting user position:", error);
@@ -127,4 +127,4 @@ app.use("/api", router);
 
 // Export the handler for serverless deployment
 export const handler = serverless(app);
-export {sendTwilioMessage,twilioClient}
+export {sendTwilioMessage}
