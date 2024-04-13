@@ -10,8 +10,9 @@ import { saveWaitList, getCurrentPosition } from "./waitlist";
 
 const app = express();
 const router = Router();
-// Initialize Twilio client with account SID and auth token from environment variables
-const twilioClient = new Twilio(process.env.ACCOUNT_ID, process.env.ACCOUNT_TOKEN);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioClient = new Twilio(accountSid, authToken);
 let isSubmitted = false;
 
 
@@ -23,7 +24,7 @@ async function sendTwilioMessage(phone, messageBody) {
   try {
     await twilioClient.messages.create({
       body: messageBody,
-      from: process.env.TWILIO_PHONE_NUMBER,
+      from: process.env.TWILIO_NUMBER,
       to: phone,
     });
     console.log("Twilio message sent successfully.");
