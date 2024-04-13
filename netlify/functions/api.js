@@ -10,9 +10,9 @@ import { saveWaitList, getCurrentPosition } from "./waitlist";
 
 const app = express();
 const router = Router();
-const accountSid = process.env.ACCOUNT_ID;
-const authToken = process.env.ACCOUNT_TOKEN;
-const twilioClient = new Twilio(accountSid, authToken);
+const account_sid = process.env.ACCOUNT_ID;
+const auth_token= process.env.ACCOUNT_TOKEN;
+const twilioClient = new Twilio(account_sid, auth_token);
 let isSubmitted = false;
 
 
