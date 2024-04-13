@@ -42,7 +42,7 @@ async function updateRemainingUsers() {
         const newPosition = position - 1;
         const docRef = doc(db, "waitlist", docId);
         await updateDoc(docRef, { position: newPosition });
-        await sendTwilioMessage(fname, phone, `Hi ${fname}, \nYour position in the waitlist has been updated to ${newPosition}.`);
+        await sendTwilioMessage(phone, `Hi ${fname}, \nYour position in the waitlist has been updated to ${newPosition}.`);
     });
 }
 
@@ -56,7 +56,7 @@ async function listenForDeletions() {
                     const deletedDocId = change.doc.id;
                     console.log("Document deleted:", deletedDocId);
                     console.log("Deleted data:", deletedData);
-                    await sendTwilioMessage(deletedData.fname, deletedData.phone, `Hi ${deletedData.fname}, \nYour table is ready. Please come to the front desk to be seated.`);
+                    await sendTwilioMessage(deletedData.phone, `Hi ${deletedData.fname}, \nYour table is ready. Please come to the front desk to be seated.`);
                     await updateRemainingUsers();
                 }
             });

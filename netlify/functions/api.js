@@ -20,7 +20,7 @@ let isSubmitted = false;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Function to send Twilio message with user position
-async function sendTwilioMessage(fname, phone, messageBody) {
+async function sendTwilioMessage(phone, messageBody) {
   try {
     await twilioClient.messages.create({
       body: messageBody,
@@ -43,7 +43,7 @@ router.post("/form-submission", async (req, res) => {
     await saveWaitList(fname, lname, email, phone, partySize, game);
     const userPosition = await getCurrentPosition();
     sendEmail(fname, lname, email, phone, partySize, game)
-    await sendTwilioMessage(fname, phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`);
+    await sendTwilioMessage(phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`);
   } catch (error) {
     console.error("Error getting user position:", error);
     res.status(500).send("Failed to submit form. Please try again later.");
@@ -127,4 +127,4 @@ app.use("/api", router);
 
 // Export the handler for serverless deployment
 export const handler = serverless(app);
-export {sendTwilioMessage}
+export {sendTwilioMessage,twilioClient}
