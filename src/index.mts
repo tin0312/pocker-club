@@ -3,7 +3,7 @@ import { Router } from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import "dotenv/config";
-import { sendTwilioMessage } from "./twilio";
+import { sendTwilioMessage } from "./twilio.mts";
 import { saveWaitList, getCurrentPosition } from "./waitlist";
 
 
