@@ -2,7 +2,7 @@ import { db } from "./firebase";
 import { collection, doc, setDoc, onSnapshot, getDocs, getCountFromServer, updateDoc } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { nanoid } from "nanoid";
-import { sendTwilioMessage } from "./api";
+import { sendTwilioMessage } from "./twilio";
 
 async function saveWaitList(fname, lname, email, phone, partySize, game) {
     const userId = nanoid();
