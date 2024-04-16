@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "utils":"file:utils"
+    "utils": "file:utils"
   }
 }
