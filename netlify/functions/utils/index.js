@@ -104,6 +104,6 @@ async function sendEmail(fname, lname, email, phone, partySize, game) {
 }
 
 // Use the router middleware for routes under /api/
-app.use("/api", router);
+app.use("/api/", router);
 
 export default app;
