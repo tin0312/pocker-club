@@ -19,16 +19,19 @@ router.post("/form-submission", async (req, res) => {
   res.redirect("/confirmation.html");
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
+
   // Get user's position in waitlist
-  try {
-    await saveWaitList(fname, lname, email, phone, partySize, game);
-    const userPosition = await getCurrentPosition();
-    sendEmail(fname, lname, email, phone, partySize, game)
-    await sendTwilioMessage(phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`);
-  } catch (error) {
-    console.error("Error getting user position:", error);
-    res.status(500).send("Failed to submit form. Please try again later.");
-  }
+  saveWaitList(fname, lname, email, phone, partySize, game).catch((error) => {
+    console.error("Error saving user to waitlist:", error);
+  });
+
+  const userPosition = await getCurrentPosition();
+
+  sendEmail(fname, lname, email, phone, partySize, game)
+
+  sendTwilioMessage(phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`).catch((error) => { 
+    console.error("Error sending SMS:", error);
+  });
 });
 
 //Routes handling
