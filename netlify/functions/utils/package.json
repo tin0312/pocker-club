@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "install": "npm run build"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "netlify deploy --prod",
-    "functions": "cd netlify/functions && npm install"
+    "build": "netlify deploy --prod"
   },
   "keywords": [],
   "author": "",
