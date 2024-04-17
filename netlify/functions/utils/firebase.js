@@ -1,4 +1,5 @@
 import admin from "firebase-admin";
+import "dotenv/config";
 
 export default function initializeFirebaseAdmin() {
   const config = {
