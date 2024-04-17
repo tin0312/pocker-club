@@ -26,7 +26,6 @@ router.post("/form-submission", async (req, res) => {
   );
 
   const userPosition = await getCurrentPosition();
-
   sendEmail(fname, lname, email, phone, partySize, game);
 
   sendTwilioMessage(
