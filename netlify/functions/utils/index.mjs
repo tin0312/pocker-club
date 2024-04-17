@@ -1,12 +1,9 @@
 import express from "express";
 import { Router } from "express";
 import bodyParser from "body-parser";
-import nodemailer from "nodemailer";
-// import "dotenv/config";
-import { sendEmail } from "./email";
-import { sendTwilioMessage } from "./twilio";
-import { saveWaitList, getCurrentPosition } from "./waitlist";
-
+import { sendEmail } from "./email.mjs";
+import { sendTwilioMessage } from "./twilio.mjs";
+import { saveWaitList, getCurrentPosition } from "./waitlist.mjs";
 
 const app = express();
 const router = Router();
@@ -21,18 +18,23 @@ router.post("/form-submission", async (req, res) => {
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
 
-  // // Get user's position in waitlist
-  // await saveWaitList(fname, lname, email, phone, partySize, game).catch((error) => {
-  //   console.error("Error saving user to waitlist:", error);
-  // });
+  // Get user's position in waitlist
+  await saveWaitList(fname, lname, email, phone, partySize, game).catch(
+    (error) => {
+      console.error("Error saving user to waitlist:", error);
+    }
+  );
 
-  // const userPosition = await getCurrentPosition();
+  const userPosition = await getCurrentPosition();
 
-  sendEmail(fname, lname, email, phone, partySize, game)
+  sendEmail(fname, lname, email, phone, partySize, game);
 
-  // sendTwilioMessage(phone, `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`).catch((error) => { 
-  //   console.error("Error sending SMS:", error);
-  // });
+  sendTwilioMessage(
+    phone,
+    `Hi ${fname},\nYour position in the waitlist is ${userPosition}.We will notify you when the seat is available!.`
+  ).catch((error) => {
+    console.error("Error sending SMS:", error);
+  });
 });
 
 //Routes handling
@@ -49,8 +51,6 @@ app.get("/confirmation", (req, res) => {
     res.status(500).send("Failed to load confirmation page.");
   }
 });
-
-
 
 // Use the router middleware for routes under /api/
 app.use("/api/", router);
