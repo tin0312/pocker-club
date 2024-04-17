@@ -1,17 +1,20 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import admin from "firebase-admin";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBWV6qeynCyft3cYLCpyZXRUrN2_nzub20",
-  authDomain: "omega-poker.firebaseapp.com",
-  projectId: "omega-poker",
-  storageBucket: "omega-poker.appspot.com",
-  messagingSenderId: "828376148142",
-  appId: "1:828376148142:web:4a603560d1084fffbd653f"
+export default function initializeFirebaseAdmin() {
+  const config = {
+    credential: admin.credential.cert({
+      "type": process.env.FIREBASE_TYPE,
+      "project_id": process.env.FIREBASE_PROJECT_ID,
+      "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+      "private_key": process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'), // Replace escaped newline characters
+      "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+      "client_id": process.env.FIREBASE_CLIENT_ID,
+      "auth_uri": process.env.FIREBASE_AUTH_URI,
+      "token_uri": process.env.FIREBASE_TOKEN_URI,
+      "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_CERT_URL,
+      "client_x509_cert_url": process.env.FIREBASE_CERT_URL,
+      "universe_domain": process.env.FIREBASE_UNIVERSE_DOMAIN
+    }),
+  };
+  return admin.apps.length ? admin.app() : admin.initializeApp(config);
 };
-
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore();
-export { firebaseApp, db };
