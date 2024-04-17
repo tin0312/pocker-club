@@ -21,7 +21,7 @@ router.post("/form-submission", async (req, res) => {
   const { fname, lname, email, phone, partySize, game } = req.body;
 
   // Get user's position in waitlist
-  saveWaitList(fname, lname, email, phone, partySize, game).catch((error) => {
+  await saveWaitList(fname, lname, email, phone, partySize, game).catch((error) => {
     console.error("Error saving user to waitlist:", error);
   });
 
