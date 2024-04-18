@@ -1,9 +1,9 @@
 import express from "express";
 import { Router } from "express";
 import bodyParser from "body-parser";
-import { sendEmail } from "./email.mjs";
-import { sendTwilioMessage } from "./twilio.mjs";
-import { saveWaitList, getCurrentPosition } from "./waitlist.mjs";
+import { sendEmail } from "./email";
+import { sendTwilioMessage } from "./twilio";
+import { saveWaitList, getCurrentPosition } from "./waitlist";
 
 const app = express();
 const router = Router();
