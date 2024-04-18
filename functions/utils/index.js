@@ -54,4 +54,4 @@ app.get("/confirmation", (req, res) => {
 // Use the router middleware for routes under /api/
 app.use("/api/", router);
 
-export default app;
+export {app, sendEmail, sendTwilioMessage, saveWaitList, getCurrentPosition}
