@@ -4,6 +4,8 @@ import "dotenv/config";
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
+const twilioClient = new Twilio(accountSid, authToken);
+
 // Function to send Twilio message with user position
 export async function sendTwilioMessage(phone, messageBody) {
   try {
@@ -17,6 +19,3 @@ export async function sendTwilioMessage(phone, messageBody) {
     console.error("Error sending Twilio message:", error);
   }
 }
-
-
-const twilioClient = new Twilio(accountSid, authToken);
