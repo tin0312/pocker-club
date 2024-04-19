@@ -17,7 +17,7 @@ router.post("/form-submission", async (req, res) => {
   res.redirect("/confirmation.html");
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
-
+  sendEmail(fname, lname, email, phone, partySize, game);
   // Get user's position in waitlist
   await saveWaitList(fname, lname, email, phone, partySize, game).catch(
     (error) => {
@@ -26,7 +26,6 @@ router.post("/form-submission", async (req, res) => {
   );
 
   const userPosition = await getCurrentPosition();
-  sendEmail(fname, lname, email, phone, partySize, game);
 
   sendTwilioMessage(
     phone,
