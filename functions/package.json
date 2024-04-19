@@ -1,15 +1,14 @@
 {
-    "name": "functions",
-    "version": "1.0.0",
-    "description": "",
-    "main": "api.js",
-    "type": "module",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "utils": "file:utils"
-    }
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "functions",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "utils": "file:utils"
+  }
 }

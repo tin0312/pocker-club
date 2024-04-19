@@ -3,7 +3,7 @@
   functions="functions/"
 
 [functions]
-  external_node_modules = ["express", "firebase-admin", "nodemailer", "twilio"]
+  external_node_modules = ["express"]
   node_bundler = "esbuild"
 
 
