@@ -3,7 +3,7 @@
   functions="functions/"
 
 [functions]
-  external_node_modules = ["express"]
+  external_node_modules = ["express", "utils"]
   node_bundler = "esbuild"
 
 
