@@ -2,7 +2,7 @@ import serverless from "serverless-http";
 import express from "express";
 import { Router } from "express";
 import bodyParser from "body-parser";
-import { sendEmail, sendTwilioMessage, saveWaitList, getCurrentPosition } from "utils";
+import { sendEmail, sendTwilioMessage, saveWaitList, getCurrentPosition } from "./utils/index.mjs";
 
 
 const app = express();

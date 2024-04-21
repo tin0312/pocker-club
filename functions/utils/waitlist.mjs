@@ -1,7 +1,7 @@
 // import { Timestamp } from 'firebase/firestore';
 import { nanoid } from "nanoid";
-import { sendTwilioMessage } from "./twilio";
-import initializeFirebaseAdmin from "./firebase";
+import { sendTwilioMessage } from "./twilio.mjs";
+import initializeFirebaseAdmin from "./firebase.mjs";
 
 // Initialize Firebase Admin
 const firebaseAdminApp = initializeFirebaseAdmin();
