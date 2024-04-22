@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import admin from "firebase-admin";
 import { Twilio } from "twilio";
 import nodemailer from "nodemailer";
+import "dotenv/config";
 
 const app = express();
 const router = Router();
@@ -132,7 +133,6 @@ export async function sendTwilioMessage(phone, messageBody) {
 }
 
 // Initialize Firebase Admin SDK
-// Initialize Firebase Admin
 const initializeFirebaseAdmin = () => {
   const config = {
     credential: admin.credential.cert({
