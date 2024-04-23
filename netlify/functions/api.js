@@ -61,15 +61,17 @@ router.post("/form-submission", async (req, res) => {
   const { fname, lname, email, phone, partySize, game } = req.body;
   // Send email using Nodemailer
   await sendEmail(fname, lname, email, phone, partySize);
-  // Send Twilio message
-  sendTwilioMessage(
-    phone,
-    `Hi ${fname},\nYour position in the waitlist is hardcoded. We will notify you when the seat is available!`
-  ).catch((error) => {
-    console.error("Error sending SMS:", error);
-  });
   // Save user to Firestore
   await saveWaitList(fname, lname, email, phone, partySize, game);
+  // Get user's position in waitlist
+  const userPosition = await getCurrentPosition();
+  // Send Twilio message
+    sendTwilioMessage(
+      phone,
+      `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available!`
+    ).catch((error) => {
+      console.error("Error sending SMS:", error);
+    });
   res.redirect("/confirmation.html");
 });
 
@@ -166,6 +168,71 @@ async function saveWaitList(fname, lname, email, phone, partySize, game) {
     console.error("Error adding user to Firestore: ", error);
   }
 }
+
+// Handle user position updates
+
+async function getCurrentPosition() {
+  try {
+    const collectionSnapshot = await db.collection("waitlist").get();
+    const userPosition = collectionSnapshot.size;
+    console.log("User position: ", userPosition);
+    return userPosition;
+  } catch (error) {
+    console.error("Error getting current position: ", error);
+  }
+}
+
+async function updateRemainingUsers() {
+  try {
+    const usersSnapshot = await db.collection("waitlist").get();
+    usersSnapshot.forEach(async (userDoc) => {
+      const docId = userDoc.id;
+      const docData = userDoc.data();
+      const { fname, phone, position } = docData;
+      const newPosition = position - 1;
+      await db
+        .collection("waitlist")
+        .doc(docId)
+        .update({ position: newPosition });
+      await sendTwilioMessage(
+        phone,
+        `Hi ${fname}, \nYour position in the waitlist has been updated to ${newPosition}.`
+      );
+    });
+  } catch (error) {
+    console.error("Error updating remaining users: ", error);
+  }
+}
+
+async function listenForDeletions() {
+  try {
+    const unsubscribe = db
+      .collection("waitlist")
+      .onSnapshot(async (snapshot) => {
+        snapshot.docChanges().forEach(async (change) => {
+          if (change.type === "removed") {
+            const deletedData = change.doc.data();
+            const deletedDocId = change.doc.id;
+            console.log("Document deleted:", deletedDocId);
+            console.log("Deleted data:", deletedData);
+            await sendTwilioMessage(
+              deletedData.phone,
+              `Hi ${deletedData.fname}, \nYour table is ready. Please come to the front desk to be seated.`
+            );
+            await updateRemainingUsers();
+          }
+        });
+      });
+    // Uncomment if you want to unsubscribe at some point
+    // return unsubscribe;
+  } catch (error) {
+    console.error("Error listening for deletions:", error);
+  }
+}
+
+// Call the function to start listening for updates
+listenForDeletions();
+
 // Use the router middleware for routes under /api/
 app.use("/api", router);
 
