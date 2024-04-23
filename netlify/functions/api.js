@@ -3,10 +3,37 @@ import { Router } from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import serverless from "serverless-http";
+import { Twilio } from "twilio";
+import { nanoid } from "nanoid";
+import admin from "firebase-admin";
 import "dotenv/config";
 
 const app = express();
 const router = Router();
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioClient = new Twilio(accountSid, authToken);
+const accountService = {
+  credential: admin.credential.cert({
+    type: process.env.FIREBASE_TYPE,
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+    private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
+    client_id: process.env.FIREBASE_CLIENT_ID,
+    auth_uri: process.env.FIREBASE_AUTH_URI,
+    token_uri: process.env.FIREBASE_TOKEN_URI,
+    auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_CERT_URL,
+    client_x509_cert_url: process.env.FIREBASE_CERT_URL,
+    universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN,
+  }),
+};
+// Firestore
+function initializeFirebaseAdmin(){
+  return admin.initializeApp(accountService);
+}
+initializeFirebaseAdmin();
+const db = admin.firestore();
 
 let isSubmitted = false;
 
@@ -28,24 +55,22 @@ app.get("/confirmation", (req, res) => {
 });
 
 // Handle submission route
-router.post("/form-submission", (req, res) => {
+router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
-  const { fname, lname, email, phone, partySize } = req.body;
+  const { fname, lname, email, phone, partySize, game } = req.body;
   // Send email using Nodemailer
-  sendEmail(fname, lname, email, phone, partySize)
-    .then(() => {
-      console.log("Email sent successfully!");
-      res.redirect("/confirmation");
-
-      setTimeout(() => {
-        isSubmitted = false;
-      }, 6000);
-    })
-    .catch((error) => {
-      console.error("Error sending email:", error);
-      res.status(500).send("Failed to submit form. Please try again later.");
-    });
+  await sendEmail(fname, lname, email, phone, partySize);
+  // Send Twilio message
+  sendTwilioMessage(
+    phone,
+    `Hi ${fname},\nYour position in the waitlist is hardcoded. We will notify you when the seat is available!`
+  ).catch((error) => {
+    console.error("Error sending SMS:", error);
+  });
+  // Save user to Firestore
+  await saveWaitList(fname, lname, email, phone, partySize, game);
+  res.redirect("/confirmation.html");
 });
 
 // Set up Email services
@@ -106,6 +131,41 @@ async function sendEmail(fname, lname, email, phone, partySize) {
   ]);
 }
 
+// Set up SMS message
+async function sendTwilioMessage(phone, messageBody) {
+  try {
+    await twilioClient.messages.create({
+      body: messageBody,
+      from: process.env.TWILIO_NUMBER,
+      to: phone,
+    });
+    console.log("Twilio message sent successfully.");
+  } catch (error) {
+    console.error("Error sending Twilio message:", error);
+  }
+}
+
+
+// Save user to Firestore
+async function saveWaitList(fname, lname, email, phone, partySize, game) {
+  const userId = nanoid();
+  try {
+    const collectionSnapshot = await db.collection("waitlist").get();
+    const userPosition = collectionSnapshot.size + 1; // Increment count to get position
+    await db.collection("waitlist").doc(userId).set({
+      fname: fname,
+      lname: lname,
+      email: email,
+      phone: phone,
+      partySize: partySize,
+      game: game,
+      position: userPosition
+    });
+    console.log("User added to Firestore");
+  } catch (error) {
+    console.error("Error adding user to Firestore: ", error);
+  }
+}
 // Use the router middleware for routes under /api/
 app.use("/api", router);
 
