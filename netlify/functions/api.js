@@ -13,6 +13,7 @@ const router = Router();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioClient = new Twilio(accountSid, authToken);
+
 const accountService = {
   credential: admin.credential.cert({
     type: process.env.FIREBASE_TYPE,
@@ -57,6 +58,7 @@ app.get("/confirmation", (req, res) => {
 // Handle submission route
 router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
+  res.redirect("/confirmation.html");
   // Extract form data from the request body
   const { fname, lname, email, phone, partySize, game } = req.body;
   // Send email using Nodemailer
@@ -66,13 +68,12 @@ router.post("/form-submission", async (req, res) => {
   // Get user's position in waitlist
   const userPosition = await getCurrentPosition();
   // Send Twilio message
-    sendTwilioMessage(
+  await sendTwilioMessage(
       phone,
       `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available!`
     ).catch((error) => {
       console.error("Error sending SMS:", error);
     });
-  res.redirect("/confirmation.html");
 });
 
 // Set up Email services
