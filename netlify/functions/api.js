@@ -182,58 +182,6 @@ async function getCurrentPosition() {
     console.error("Error getting current position: ", error);
   }
 }
-
-async function updateRemainingUsers() {
-  try {
-    const usersSnapshot = await db.collection("waitlist").get();
-    usersSnapshot.forEach(async (userDoc) => {
-      const docId = userDoc.id;
-      const docData = userDoc.data();
-      const { fname, phone, position } = docData;
-      const newPosition = position - 1;
-      await db
-        .collection("waitlist")
-        .doc(docId)
-        .update({ position: newPosition });
-      await sendTwilioMessage(
-        phone,
-        `Hi ${fname}, \nYour position in the waitlist has been updated to ${newPosition}.`
-      );
-    });
-  } catch (error) {
-    console.error("Error updating remaining users: ", error);
-  }
-}
-
-async function listenForDeletions() {
-  try {
-    const unsubscribe = db
-      .collection("waitlist")
-      .onSnapshot(async (snapshot) => {
-        snapshot.docChanges().forEach(async (change) => {
-          if (change.type === "removed") {
-            const deletedData = change.doc.data();
-            const deletedDocId = change.doc.id;
-            console.log("Document deleted:", deletedDocId);
-            console.log("Deleted data:", deletedData);
-            await sendTwilioMessage(
-              deletedData.phone,
-              `Hi ${deletedData.fname}, \nYour table is ready. Please come to the front desk to be seated.`
-            );
-            await updateRemainingUsers();
-          }
-        });
-      });
-    // Uncomment if you want to unsubscribe at some point
-    // return unsubscribe;
-  } catch (error) {
-    console.error("Error listening for deletions:", error);
-  }
-}
-
-// Call the function to start listening for updates
-listenForDeletions();
-
 // Use the router middleware for routes under /api/
 app.use("/api", router);
 
