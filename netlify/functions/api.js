@@ -156,6 +156,7 @@ async function saveWaitList(fname, lname, email, phone, partySize, game) {
     const collectionSnapshot = await db.collection("waitlist").get();
     const userPosition = collectionSnapshot.size + 1; // Increment count to get position
     await db.collection("waitlist").doc(userId).set({
+      id: userId,
       fname: fname,
       lname: lname,
       email: email,
