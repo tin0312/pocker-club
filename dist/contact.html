@@ -64,8 +64,6 @@
                         <li>
                             <a href="games.html">Games</a>
                         </li>
-
-                        <li>
                         <li>
                             <a href="sign-up.html">Event <span
                                     class="badge badge--sm badge--base text-dark">NEW</span></a>
@@ -138,7 +136,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="fname" class="form-label">First Name <span
-                                                class="text--danger">*</span></label>
+                                                class="text--base">*</span></label>
                                         <input id="fname" type="text" name="fname" class="form-control form--control"
                                             minlength="2" maxlength="20" pattern="[A-Za-z ]+" required>
                                     </div>
@@ -146,7 +144,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lname" class="form-label">Last Name <span
-                                                class="text--danger">*</span></label>
+                                                class="text--base">*</span></label>
                                         <input id="lname" type="text" name="lname" class="form-control form--control"
                                             minlength="2" maxlength="20" pattern="[A-Za-z ]+" required>
                                     </div>
@@ -154,7 +152,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email Address <span
-                                                class="text--danger">*</span></label>
+                                                class="text--base">*</span></label>
                                         <input id="email" type="email" name="email" class="form-control form--control"
                                             pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
                                     </div>
@@ -162,29 +160,29 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tel" class="form-label">Phone Number <span
-                                                class="text--danger">*</span></label>
+                                                class="text--base">*</span></label>
                                         <input id="phone" type="number" name="phone" class="form-control form--control"
                                             pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="game" class="form-label">Select Game</label>
-                                        <select id="game" name="game" class="form-control form--control">
+                                        <label for="game" class="form-label">Select Game<span
+                                                class="text--base">*</span></label>
+                                        <select id="game" name="game" class="form-control form--control" required>
                                             <option value="NLH">NLH (No limit Texas Hold’em)</option>
                                             <option value="PLO">PLO (Pot limit Omaha)</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="party-size" class="form-label">Party Size <span
-                                                class="text--danger">*</span></label>
-                                        <input id="party-size" type="number" name="partySize"
-                                            class="form-control form--control" min="1" required>
+                                        <label for="msg" class="form-label">Your Message <span
+                                                class="text--base">*</span></label>
+                                        <textarea name="msg" id="msg" class="form-control form--control"></textarea>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-md-12 text-center">
                                     <button type="submit" class="cmn--btn active">Join</button>
                                 </div>
                             </div>

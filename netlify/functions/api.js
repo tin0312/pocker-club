@@ -59,11 +59,11 @@ app.get("/confirmation", (req, res) => {
 router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
-  const { fname, lname, email, phone, partySize, game } = req.body;
+  const { fname, lname, email, phone, msg, game } = req.body;
   // Send email using Nodemailer
-  await sendEmail(fname, lname, email, phone, partySize);
+  await sendEmail(fname, lname, email, phone, msg);
   // Save user to Firestore
-  await saveWaitList(fname, lname, email, phone, partySize, game);
+  await saveWaitList(fname, lname, email, phone, msg, game);
   // Get user's position in waitlist
   const userPosition = await getCurrentPosition();
   // Send Twilio message
@@ -77,7 +77,7 @@ router.post("/form-submission", async (req, res) => {
 });
 
 // Set up Email services
-async function sendEmail(fname, lname, email, phone, partySize) {
+async function sendEmail(fname, lname, email, phone, msg) {
   // Create a Nodemailer transporter
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -102,7 +102,7 @@ async function sendEmail(fname, lname, email, phone, partySize) {
         <p style="margin: 30px 0;"><strong>Phone:</strong> ${phone}</p>
     </div>
     <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
-        <p>${partySize}</p>
+        <p>${msg}</p>
     </div>
 </div>
         `,
@@ -150,7 +150,7 @@ async function sendTwilioMessage(phone, messageBody) {
 
 
 // Save user to Firestore
-async function saveWaitList(fname, lname, email, phone, partySize, game) {
+async function saveWaitList(fname, lname, email, phone, msg, game) {
   const userId = nanoid();
   try {
     const collectionSnapshot = await db.collection("waitlist").get();
@@ -161,7 +161,7 @@ async function saveWaitList(fname, lname, email, phone, partySize, game) {
       lname: lname,
       email: email,
       phone: phone,
-      partySize: partySize,
+      msg: msg,
       game: game,
       position: userPosition
     });
