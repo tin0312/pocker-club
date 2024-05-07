@@ -1292,7 +1292,7 @@ i {
     box-shadow: 0 3px 12px 3px rgba(255, 82, 1, 0.1);
     overflow: hidden;
     z-index: 11;
-    background: #350b2d;
+    background-color: #14343b;
     border: 2px solid rgba(255, 200, 39, 0.4);
     padding: 10px;
   }
@@ -1392,7 +1392,7 @@ i {
   }
 
   .menu .sub-menu {
-    background: #2e0327;
+    background-color: #14343b !important;
   }
 
   .menu .has-sub-menu > a::after {
@@ -2205,7 +2205,7 @@ i {
   overflow-y: auto;
 }
 
-/* .account__main__wrapper {
+.account__main__wrapper {
   display: flex;
   padding-top: 50px;
   padding-bottom: 50px;
@@ -2213,9 +2213,10 @@ i {
 
 @media (max-width: 991px) {
   .account__main__wrapper {
+    flex-direction: column-reverse;
     flex-wrap: wrap;
   }
-} */
+}
 
 .account__form__wrapper {
   text-align: center;
@@ -2270,6 +2271,7 @@ i {
 }
 
 .account__form__wrapper.sign-up {
+  background-color: #14343b;
   padding-left: 50px;
   padding-right: 50px;
   max-width: 700px;
@@ -2320,7 +2322,7 @@ i {
 .account__content__wrapper {
   margin: 8rem 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 40%);
   position: relative;
 }
