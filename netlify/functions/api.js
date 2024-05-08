@@ -30,7 +30,7 @@ const accountService = {
   }),
 };
 // Firestore
-function initializeFirebaseAdmin(){
+function initializeFirebaseAdmin() {
   return admin.initializeApp(accountService);
 }
 initializeFirebaseAdmin();
@@ -57,23 +57,23 @@ app.get("/confirmation", (req, res) => {
 
 // Handle submission route
 router.post("/form-submission", async (req, res) => {
-  isSubmitted = true;
-  res.redirect("/confirmation.html");
   // Extract form data from the request body
   const { fname, lname, email, phone, msg, game } = req.body;
-  // Send email using Nodemailer
-  await sendEmail(fname, lname, email, phone, msg);
   // Save user to Firestore
   await saveWaitList(fname, lname, email, phone, msg, game);
   // Get user's position in waitlist
   const userPosition = await getCurrentPosition();
+  isSubmitted = true;
+  res.redirect("/confirmation.html");
+  // Send email using Nodemailer
+  await sendEmail(fname, lname, email, phone, msg);
   // Send Twilio message
   await sendTwilioMessage(
-      phone,
-      `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available!`
-    ).catch((error) => {
-      console.error("Error sending SMS:", error);
-    });
+    phone,
+    `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available!`
+  ).catch((error) => {
+    console.error("Error sending SMS:", error);
+  });
 });
 
 // Set up Email services
@@ -148,7 +148,6 @@ async function sendTwilioMessage(phone, messageBody) {
   }
 }
 
-
 // Save user to Firestore
 async function saveWaitList(fname, lname, email, phone, msg, game) {
   const userId = nanoid();
@@ -163,7 +162,7 @@ async function saveWaitList(fname, lname, email, phone, msg, game) {
       phone: phone,
       msg: msg,
       game: game,
-      position: userPosition
+      position: userPosition,
     });
     console.log("User added to Firestore");
   } catch (error) {
