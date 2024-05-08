@@ -57,16 +57,15 @@ app.get("/confirmation", (req, res) => {
 
 // Handle submission route
 router.post("/form-submission", async (req, res) => {
+  isSubmitted = true;
   // Extract form data from the request body
   const { fname, lname, email, phone, msg, game } = req.body;
+  // Send email using Nodemailer
+  await sendEmail(fname, lname, email, phone, msg);
   // Save user to Firestore
   await saveWaitList(fname, lname, email, phone, msg, game);
   // Get user's position in waitlist
   const userPosition = await getCurrentPosition();
-  isSubmitted = true;
-  res.redirect("/confirmation.html");
-  // Send email using Nodemailer
-  await sendEmail(fname, lname, email, phone, msg);
   // Send Twilio message
   await sendTwilioMessage(
     phone,
@@ -74,6 +73,7 @@ router.post("/form-submission", async (req, res) => {
   ).catch((error) => {
     console.error("Error sending SMS:", error);
   });
+  res.redirect("/confirmation.html");
 });
 
 // Set up Email services
