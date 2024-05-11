@@ -64,15 +64,6 @@ router.post("/form-submission", async (req, res) => {
   await sendEmail(fname, lname, email, phone, msg);
   // Save user to Firestore
   await saveWaitList(fname, lname, email, phone, msg, game);
-  // Get user's position in waitlist
-  const userPosition = await getCurrentPosition();
-  // Send Twilio message
-  await sendTwilioMessage(
-    phone,
-    `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available!`
-  ).catch((error) => {
-    console.error("Error sending SMS:", error);
-  });
   res.redirect("/confirmation.html");
 });
 
@@ -153,7 +144,7 @@ async function saveWaitList(fname, lname, email, phone, msg, game) {
   const userId = nanoid();
   try {
     const collectionSnapshot = await db.collection("waitlist").get();
-    const userPosition = collectionSnapshot.size + 1; // Increment count to get position
+    const position = collectionSnapshot.size + 1; // Increment count to get position
     await db.collection("waitlist").doc(userId).set({
       id: userId,
       fname: fname,
@@ -162,9 +153,18 @@ async function saveWaitList(fname, lname, email, phone, msg, game) {
       phone: phone,
       msg: msg,
       game: game,
-      position: userPosition,
+      position: position,
     });
     console.log("User added to Firestore");
+      // Get user's position in waitlist
+    const userPosition = await getCurrentPosition();
+    // Send Twilio message
+    await sendTwilioMessage(
+    phone,
+    `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available! See live: https://positionupdate.netlify.app/${userId}`
+  ).catch((error) => {
+    console.error("Error sending SMS:", error);
+  });
   } catch (error) {
     console.error("Error adding user to Firestore: ", error);
   }
