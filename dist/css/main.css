@@ -3004,14 +3004,12 @@ select.form--control option:hover {
 
 .game-item__thumb {
   width: 100%;
-  height: 140px;
+  height: 200px;
   margin: 0 auto 25px;
   border: 1px solid rgba(255, 255, 255, 0.17);
   border-radius: 7px;
   background-color: #14343b;
-  padding: 10px;
 }
-
 @media (max-width: 1399px) {
   .game-item__thumb {
     height: 130px;
@@ -3021,7 +3019,7 @@ select.form--control option:hover {
 .game-item__thumb img {
   height: 100%;
   width: 100%;
-  object-fit: contain;
+  object-fit:cover;
 }
 
 .game-item__content .title {
