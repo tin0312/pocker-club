@@ -1,5 +1,27 @@
 'user strict';
 
+// reCapcha v2 reCapcha
+window.addEventListener('load', () => {
+  const $recaptcha = document.querySelector('#g-recaptcha-response');
+  if ($recaptcha) {
+      $recaptcha.setAttribute('required', 'required');
+}})
+// game options based on days of the week
+document.addEventListener("DOMContentLoaded", function() {
+  var gameSelect = document.getElementById("game");
+  var today = new Date().getDay();
+  if (today === 3 || today === 5 || today === 0) { // Wednesday (3), Friday (5), Sunday (0)
+      gameSelect.innerHTML = `
+          <option value="" disabled selected>What game do you want to play today?</option>
+          <option value="NLH">NLH (No limit Texas Hold’em)</option>
+          <option value="PLO">PLO (Pot limit Omaha)</option>
+      `;
+  } else {
+      gameSelect.innerHTML = `
+          <option value="NLH" selected>NLH (No limit Texas Hold’em)</option>
+      `;
+  }
+});
 // Preloader
 $(window).on('load', function () {
     $('.preloader').fadeOut(1000);

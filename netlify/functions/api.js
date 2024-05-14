@@ -59,70 +59,52 @@ app.get("/confirmation", (req, res) => {
 router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
-  const { fname, lname, email, phone, msg, game } = req.body;
-  // Send email using Nodemailer
-  await sendEmail(fname, lname, email, phone, msg);
+  const { fname, lname,phone, msg, game } = req.body;
+  await sendEmail(fname, lname, phone, msg);
   // Save user to Firestore
-  await saveWaitList(fname, lname, email, phone, msg, game);
+  await saveWaitList(fname, lname, phone, msg, game);
   res.redirect("/confirmation.html");
 });
 
-// Set up Email services
-async function sendEmail(fname, lname, email, phone, msg) {
-  // Create a Nodemailer transporter
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_APP,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+//Nodemailer 
+async function sendEmail(fname, lname, phone, msg) {
+  try {
+    // Create a Nodemailer transporter
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_APP,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-  // Email message options
-  let adminMailOptions = {
-    from: email,
-    to: process.env.EMAIL_APP,
-    subject: "Omega Poker Club - Booking",
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
-    <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
-    <div style="margin-bottom: 20px;">
-        <p style="margin: 20px 0;"><strong>First Name:</strong> ${fname}</p>
-        <p style="margin: 20px 0;"><strong>Last Name:</strong> ${lname}</p>
-        <p style="margin: 20px 0;"><strong>Email:</strong> ${email}</p>
-        <p style="margin: 30px 0;"><strong>Phone:</strong> ${phone}</p>
-    </div>
-    <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
-        <p>${msg}</p>
-    </div>
-</div>
-        `,
-  };
+    // Email message options
+    let adminMailOptions = {
+      from: process.env.EMAIL_APP,
+      to: process.env.EMAIL_APP,
+      subject: "Omega Poker Club - Booking",
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+      <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
+      <div style="margin-bottom: 20px;">
+          <p style="margin: 20px 0;"><strong>First Name:</strong> ${fname}</p>
+          <p style="margin: 20px 0;"><strong>Last Name:</strong> ${lname}</p>
+          <p style="margin: 30px 0;"><strong>Phone:</strong> ${phone}</p>
+      </div>
+      <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
+          <p>${msg}</p>
+      </div>
+  </div>
+          `,
+    };
 
-  let userMailOption = {
-    from: process.env.EMAIL_APP,
-    to: email,
-    subject: "Omega Poker Club - Booking",
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333; text-align: center; margin-bottom: 20px;">Booking Confirmation</h2>
-        <p style="color: #666; text-align: center; margin-bottom: 50px;">Thank you for booking with us!</p>
-        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
-            <p style="color: #333; margin: 0;text-align: center;">We have received your booking request and will get
-                back to you shortly.
-            </p>
-        </div>
-        <p style="color:#14343b; margin-bottom: 20px;font-weight: bold; font-style: italic;">Toronto Omega Poker - TOP
-            club</p>
-    </div>
-    `,
-  };
-
-  // Send the email
-  await Promise.all([
-    transporter.sendMail(userMailOption),
-    transporter.sendMail(adminMailOptions),
-  ]);
+    // Send the email
+    await transporter.sendMail(adminMailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error; // Re-throw the error to be caught by the caller
+  }
 }
 
 // Set up SMS message
@@ -140,7 +122,7 @@ async function sendTwilioMessage(phone, messageBody) {
 }
 
 // Save user to Firestore
-async function saveWaitList(fname, lname, email, phone, msg, game) {
+async function saveWaitList(fname, lname, phone, msg, game) {
   const userId = nanoid();
   try {
     const collectionSnapshot = await db.collection("waitlist").get();
@@ -149,7 +131,6 @@ async function saveWaitList(fname, lname, email, phone, msg, game) {
       id: userId,
       fname: fname,
       lname: lname,
-      email: email,
       phone: phone,
       msg: msg,
       game: game,

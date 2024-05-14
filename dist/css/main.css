@@ -4634,5 +4634,29 @@ iframe {
     transform: rotateX(90deg);
   }
 }
+/* reCapcha v2 message required */
+#g-recaptcha-response {
+  display: block !important;
+  position: absolute;
+  margin: -78px 0 0 0 !important;
+  width: 302px !important;
+  height: 76px !important;
+  z-index: -999999;
+  opacity: 0;
+}
+.table tbody tr:not(:first-child):nth-child(odd) {
+  background: #122e34;
+}
+.table tbody tr:nth-child(odd) {
+  background: #14343b;
+}
+#game-item-bad-beat::after{
+  background:none;
+}
+#bad-beat{
+  background:none;
+  border: none;
+  margin-bottom: 0;
+}
 
 /*# sourceMappingURL=main.css.map */
