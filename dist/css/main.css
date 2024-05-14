@@ -4128,9 +4128,8 @@ div[class*="col"]:nth-child(even) > .faq-item {
 }
 
 @media (max-width: 450px) {
-  .coins-wrapper {
-    width: 150px;
-    height: 150px;
+  .dashboard-section{
+    padding-top: 0 !important;
   }
 }
 
