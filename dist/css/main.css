@@ -1740,9 +1740,9 @@ i {
 }
 
 @media (max-width: 767px) {
-  .table--responsive--md tbody tr td:last-child {
+  /* .table--responsive--md tbody tr td:last-child {
     border: none;
-  }
+  } */
 
   /* .table--responsive--md tbody tr td::before {
     content: attr(data-label);
@@ -4020,7 +4020,6 @@ div[class*="col"]:nth-child(even) > .faq-item {
 
 .game-details-left {
   padding: 50px;
-  background-color: #2e0327;
   border-radius: 8px;
   min-height: 100%;
 }
@@ -4105,7 +4104,7 @@ div[class*="col"]:nth-child(even) > .faq-item {
   transition: all ease 0.3s;
   width: 300px;
   height: 300px;
-  animation: coin-rotate 2s linear infinite;
+  animation: coin-rotate 5s linear infinite;
 }
 
 .coins-wrapper img {
