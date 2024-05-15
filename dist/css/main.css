@@ -4686,5 +4686,8 @@ iframe {
   #bad-beat{
     height: 200px;
   }
+  td{
+    padding-right: 0 !important;
+  }
 }
 /*# sourceMappingURL=main.css.map */
