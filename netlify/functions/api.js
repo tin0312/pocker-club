@@ -1,7 +1,6 @@
 import express from "express";
 import { Router } from "express";
 import bodyParser from "body-parser";
-import nodemailer from "nodemailer";
 import serverless from "serverless-http";
 import { Twilio } from "twilio";
 import { nanoid } from "nanoid";
@@ -60,52 +59,10 @@ router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
   const { fname, lname,phone, msg, game } = req.body;
-  await sendEmail(fname, lname, phone, msg);
   // Save user to Firestore
   await saveWaitList(fname, lname, phone, msg, game);
   res.redirect("/confirmation.html");
 });
-
-//Nodemailer 
-async function sendEmail(fname, lname, phone, msg) {
-  try {
-    // Create a Nodemailer transporter
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_APP,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    // Email message options
-    let adminMailOptions = {
-      from: process.env.EMAIL_APP,
-      to: process.env.EMAIL_APP,
-      subject: "Omega Poker Club - Booking",
-      html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
-      <h2 style="color: #333; text-align: center; margin-bottom: 50px;">New Appointment</h2>
-      <div style="margin-bottom: 20px;">
-          <p style="margin: 20px 0;"><strong>First Name:</strong> ${fname}</p>
-          <p style="margin: 20px 0;"><strong>Last Name:</strong> ${lname}</p>
-          <p style="margin: 30px 0;"><strong>Phone:</strong> ${phone}</p>
-      </div>
-      <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
-          <p>${msg}</p>
-      </div>
-  </div>
-          `,
-    };
-
-    // Send the email
-    await transporter.sendMail(adminMailOptions);
-    console.log('Email sent successfully');
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw error; // Re-throw the error to be caught by the caller
-  }
-}
 
 // Set up SMS message
 async function sendTwilioMessage(phone, messageBody) {
@@ -142,10 +99,12 @@ async function saveWaitList(fname, lname, phone, msg, game) {
     // Send Twilio message
     await sendTwilioMessage(
     phone,
-    `Hi ${fname},\nYour position in the waitlist is ${userPosition}. We will notify you when the seat is available! See live: https://positionupdate.netlify.app/${userId}`
+    `Omega Poker T.O.P Club\n Hi ${fname},\nYou have successfully booked a seat with us.Your position is ${userPosition} in the waitlist.We will notify you when the seat is available!\nThank you!\nSee live: https://positionupdate.netlify.app/${userId}`
   ).catch((error) => {
     console.error("Error sending SMS:", error);
   });
+    const customerInfoMessage = `New customer information:\nName: ${fname} ${lname}\nPhone: ${phone}\nMessage: ${msg}\nGame: ${game}`;
+    await sendTwilioMessage(process.env.PERSONAL_PHONE, customerInfoMessage);
   } catch (error) {
     console.error("Error adding user to Firestore: ", error);
   }
