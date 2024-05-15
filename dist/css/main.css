@@ -434,7 +434,6 @@ body {
   min-height: 100vh;
 }
 
-
 h1,
 h2,
 h3,
@@ -599,7 +598,6 @@ select.lang-select {
 textarea.form--control {
   height: 150px;
   padding-top: 10px;
-
 }
 
 .title,
@@ -1722,7 +1720,7 @@ i {
   /* .table--responsive--md tbody tr {
     display: block;
   } */
-/* 
+  /* 
   .table--responsive--md tbody tr td {
     display: flex;
     align-items: center;
@@ -3021,7 +3019,10 @@ select.form--control option:hover {
 .game-item__thumb img {
   height: 100%;
   width: 100%;
-  object-fit:cover;
+  object-fit: cover;
+}
+.game-item__thumb #trophy {
+  object-fit: contain;
 }
 
 .game-item__content .title {
@@ -3106,7 +3107,7 @@ select.form--control option:hover {
   position: relative;
 }
 
-.why-section .shape1{
+.why-section .shape1 {
   left: -100px;
   top: 50px;
   z-index: -1;
@@ -4128,8 +4129,8 @@ div[class*="col"]:nth-child(even) > .faq-item {
 }
 
 @media (max-width: 450px) {
-  .dashboard-section{
-    padding-top: 0 !important;
+  .dashboard-section {
+    padding-top: 0;
   }
 }
 
@@ -4647,30 +4648,54 @@ iframe {
 .table tbody tr:nth-child(odd) {
   background: #102a2f;
 }
-#game-item-bad-beat::after{
-  background:none;
+#game-item-bad-beat::after {
+  background: none;
 }
-#bad-beat{
-  background:none;
+#bad-beat {
+  background: none;
+  height: 250px;
   border: none;
-  margin-bottom: 0;
 }
 .animated-prize {
-  animation: flashColor 2s infinite alternate;
+  font-size: 4rem;
+  color: white;
+  text-shadow: 5px 0px 0px #fabe2c;
 }
 
-@keyframes flashColor {
+
+#bad-beat img {
+  filter: drop-shadow(0 0 4px #000);
+  transition: 0.5s;
+  animation: animate 2s linear infinite;
+}
+
+@keyframes animate {
   0% {
-    color: #ff0000; /* Start with red */
+    transform: scale(1);
   }
+
+  25% {
+    transform: scale(1.1);
+  }
+
   50% {
-    color: #00ff00; /* Change to green halfway through */
+    transform: scale(1);
   }
+
+  75% {
+    transform: scale(1.2);
+  }
+
   100% {
-    color: #ff0000; /* Back to red */
+    transform: scale(1.1);
   }
 }
-
-
-
+@media (max-width: 575px) {
+  .animated-prize {
+    font-size: 2rem;
+  }
+  #bad-beat{
+    height: 200px;
+  }
+}
 /*# sourceMappingURL=main.css.map */
