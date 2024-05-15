@@ -1711,45 +1711,12 @@ i {
   top: 2px;
   color: #fff;
 }
-/* Table starts here*/
-@media (max-width: 767px) {
-  /* .table--responsive--md thead {
-    display: none;
-  } */
-
-  /* .table--responsive--md tbody tr {
-    display: block;
-  } */
-  /* 
-  .table--responsive--md tbody tr td {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.17);
-  } */
-}
-
 @media (max-width: 767px) and (max-width: 991px) {
   .table--responsive--md tbody tr td {
     font-size: 14px !important;
   }
 }
 
-@media (max-width: 767px) {
-  /* .table--responsive--md tbody tr td:last-child {
-    border: none;
-  } */
-
-  /* .table--responsive--md tbody tr td::before {
-    content: attr(data-label);
-    font-family: "Josefin Sans", sans-serif;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 500;
-  } */
-}
 
 @media (max-width: 767px) and (max-width: 575px) {
   .table--responsive--md tbody tr td::before {
