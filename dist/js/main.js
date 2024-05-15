@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const now = new Date();
 const currentHour = now.getHours();
 const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-const joinBtn = document.querySelector(".cmn--btn");
+const joinBtn = document.querySelector("#join-btn");
 
 joinBtn?.addEventListener("click", (event) => {
   // Prevent the default form submission behavior
