@@ -52,13 +52,8 @@ joinBtn?.addEventListener("click", (event) => {
     $(".alert").html(
       "<strong>Error:</strong> Waitlist is currently closed. Please try again during operating hours."
     );
-    // Optionally, scroll to the alert for better visibility
-    $("html, body").animate(
-      {
-        scrollTop: $(".alert").offset().top,
-      },
-      500
-    );
+  // Scroll to the alert for better visibility
+  $(".alert").get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
     // If the current time is within the allowed time range, allow form submission
     $(".contact-form").submit();
