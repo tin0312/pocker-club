@@ -5,23 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omega Poker</title>
-    <link rel="apple-touch-icon" sizes="180x180" href=/g">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-    <link rel="manifest" href="/images/site.webmanifest">
+    <title>Toronto Omega Poker</title>
+    <!-- Icon Link -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" sizes="48x48" href="images/favicon.ico">
+    <link rel="manifest" href="images/site.webmanifest">
     <!-- bootstrap 5  -->
-    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
-    <!-- Icon Link  -->
-    <link rel="stylesheet" href="/css/all.min.css">
-    <link rel="stylesheet" href="/css/line-awesome.min.css">
-    <link rel="stylesheet" href="/css/lib/animate.css">
+    <link rel="stylesheet" href="css/lib/bootstrap.min.css">
+    <!-- CSS Link  -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/line-awesome.min.css">
+    <link rel="stylesheet" href="css/lib/animate.css">
 
     <!-- Plugin Link -->
-    <link rel="stylesheet" href="/css/lib/slick.css">
+    <link rel="stylesheet" href="css/lib/slick.css">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="css/main.css">
+    <meta name="description" content="Welcome to Toronto Omega Poker! Our name says everything!! Join us for the 'TOP' quality game in town with pros, ceramic chips, and luxury tables.">
 </head>
 
 <body data-bs-spy="scroll" data-bs-offset="170" data-bs-target=".privacy-policy-sidebar-menu">
@@ -53,22 +55,23 @@
         <div class="container">
             <div class="header-bottom">
                 <div class="header-bottom-area align-items-center">
-                    <div class="logo"><a href="index.html"><img src="/images/omega-logo.png"
-                                alt="omega-logo"></a></div>
+                    <div class="logo"><a href="index.html"><img src="./images/omega-logo.png" alt="logo"></a></div>
                     <ul class="menu">
                         <li>
                             <a href="index.html">Home</a>
                         </li>
                         <li>
-                            <a href="about.html">About</a>
-                        </li>
-                        <li>
                             <a href="games.html">Games <span
                                     class="badge badge--sm badge--base text-dark">NEW</span></a>
+                        </li>
+                        </li>
+                        <li>
+                            <a href="schedule.html">Schedule</a>
                         </li>
                         <li>
                             <a href="contact.html">Contact</a>
                         </li>
+
                         <button class="btn-close btn-close-white d-lg-none"></button>
                     </ul>
                     <div class="header-trigger-wrapper d-flex d-lg-none align-items-center">
@@ -106,70 +109,82 @@
                             <h3 class="title mb-3 mb-lg-4">Contact Information</h3>
                             <ul class="contact-info-list m-0">
                                 <li><a href="mailto:demo@gmail.com"></a> <i class="las la-map-marker-alt"></i>
-                                    <span>Street Name <br> Province and Postal Code</span>
+                                    <span>Hwy 400 & Finch <br> Toronto</span>
                                 </li>
-                                <li><a href="tel:238754"> <i class="las la-phone-volume"></i> <span>Cell 1</span></a>
+                                <li><a href="tel:4379909017"> <i class="las la-phone-volume"></i> <span>(+1) 437 990
+                                            9017</span></a>
                                 </li>
-                                <li><a href="tel:238754"> <i class="las la-phone-volume"></i> <span>Cell 2</span></a>
-                                </li>
-                                <li><a href="mailto:demo@gmail.com"> <i class="las la-envelope"></i> <span>Email
-                                            1</span></a></li>
-                                <li><a href="mailto:demo@gmail.com"> <i class="las la-envelope"></i> <span>Email
-                                            2</span></a></li>
+                                <li><a href="mailto:omegapokerclub24@gmail.com"> <i class="las la-envelope"></i>
+                                        <span>omegapokerclub24@gmail.com</span></a></li>
                             </ul>
                             <ul class="social-links mt-4">
                                 <li><a href="#0"><i class="lab la-facebook-f"></i></a></li>
-                                <li><a href="#0"><i class="lab la-twitter"></i></a></li>
                                 <li><a href="#0"><i class="lab la-instagram"></i></a></li>
-                                <li><a href="#0"><i class="lab la-vimeo"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-7">
+                        <div class="alert alert-info" role="alert">
+                            <strong>Important:</strong> Waitlist operates between the hours of 1pm and 12am from Monday to Friday, and from 9am to 12am on Saturdays and Sundays.
+                        </div>
                         <form class="contact-form" action="/api/form-submission" method="POST">
-                            <h3 class="title mb-3">Get In Touch</h3>
+                            <h3 class="title mb-3">Join The Waitlist</h3>
                             <div class="row gy-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="fname" class="form-label">First Name <span
-                                                class="text--danger">*</span></label>
-                                        <input id="fname" type="text" name="fname" class="form-control form--control" minlength="2"
-                                            maxlength="20" pattern=pattern="[A-Za-z ]+" required></input>
+                                                class="text--base">*</span></label>
+                                        <input id="fname" type="text" name="fname" class="form-control form--control"
+                                            minlength="2" maxlength="20" pattern="[A-Za-z ]+" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lname" class="form-label">Last Name <span
-                                                class="text--danger">*</span></label>
-                                        <input id="lname" type="text" name="lname" class="form-control form--control" minlength="2"
-                                            maxlength="20" pattern="[A-Za-z ]+" required></input>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="email" class="form-label">Email Address <span
-                                                class="text--danger">*</span></label>
-                                        <input id="email" type="email" name="email" class="form-control form--control"
-                                            pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required>
+                                                class="text--base">*</span></label>
+                                        <input id="lname" type="text" name="lname" class="form-control form--control"
+                                            minlength="2" maxlength="20" pattern="[A-Za-z ]+" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tel" class="form-label">Phone Number <span
-                                                class="text--danger">*</span></label>
+                                                class="text--base">*</span></label>
                                         <input id="phone" type="number" name="phone" class="form-control form--control"
-                                            pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required></input>
+                                            pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="game" class="form-label">Select Game <span
+                                                class="text--base">*</span></label>
+                                        <select id="game" name="game" class="form-control form--control" required>
+                                            <option value="" disabled selected>What game do you want to play today?
+                                            </option>
+                                            <option value="NLH">NLH (No limit Texas Hold’em)</option>
+                                            <option value="PLO">PLO (Pot limit Omaha)</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="msg" class="form-label">Your Message <span
-                                                class="text--danger">*</span></label>
-                                        <textarea id="msg" name="msg" class="form-control form--control" required></textarea>
+                                                class="text--base">*</span></label>
+                                        <textarea name="msg" id="msg" class="form-control form--control"></textarea>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <button type="submit" class="cmn--btn active">Send Message</button>
+                                <!-- reCapcha -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="g-recaptcha"
+                                            data-sitekey="6LenadspAAAAAJGrlPrLIRKV4yCqbNBjwQs8WA7h">
+                                        </div>
+                                        <div class="help-block with-errors" id="recaptcha-error"></div>
+                                    </div>
+                                </div>
+                                <!-- reCapcha -->
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="cmn--btn active" id="join-btn">Join</button>
                                 </div>
                             </div>
                         </form>
@@ -190,8 +205,8 @@
                                 alt="omega-logo"></a></div>
                     <ul class="footer-links d-flex flex-wrap justify-content-center">
                         <li><a href="games.html">Games</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="schedule.html">Schedule</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -219,10 +234,9 @@
 
     <!-- Pluglin Link -->
     <script src="/js/lib/slick.min.js"></script>
-
     <!-- main js -->
     <script src="/js/main.js"></script>
-
+    
 </body>
 
 </html>

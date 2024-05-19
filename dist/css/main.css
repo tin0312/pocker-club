@@ -434,7 +434,6 @@ body {
   min-height: 100vh;
 }
 
-
 h1,
 h2,
 h3,
@@ -599,7 +598,6 @@ select.lang-select {
 textarea.form--control {
   height: 150px;
   padding-top: 10px;
-
 }
 
 .title,
@@ -1292,7 +1290,7 @@ i {
     box-shadow: 0 3px 12px 3px rgba(255, 82, 1, 0.1);
     overflow: hidden;
     z-index: 11;
-    background: #350b2d;
+    background-color: #14343b;
     border: 2px solid rgba(255, 200, 39, 0.4);
     padding: 10px;
   }
@@ -1392,7 +1390,7 @@ i {
   }
 
   .menu .sub-menu {
-    background: #2e0327;
+    background-color: #14343b !important;
   }
 
   .menu .has-sub-menu > a::after {
@@ -1713,45 +1711,12 @@ i {
   top: 2px;
   color: #fff;
 }
-
-@media (max-width: 767px) {
-  .table--responsive--md thead {
-    display: none;
-  }
-
-  .table--responsive--md tbody tr {
-    display: block;
-  }
-
-  .table--responsive--md tbody tr td {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.17);
-  }
-}
-
 @media (max-width: 767px) and (max-width: 991px) {
   .table--responsive--md tbody tr td {
     font-size: 14px !important;
   }
 }
 
-@media (max-width: 767px) {
-  .table--responsive--md tbody tr td:last-child {
-    border: none;
-  }
-
-  .table--responsive--md tbody tr td::before {
-    content: attr(data-label);
-    font-family: "Josefin Sans", sans-serif;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 500;
-  }
-}
 
 @media (max-width: 767px) and (max-width: 575px) {
   .table--responsive--md tbody tr td::before {
@@ -1860,7 +1825,7 @@ i {
   padding: 10px 15px;
   font-family: "Josefin Sans", sans-serif;
   color: #fff;
-  border: none;
+  border-width: 1px;
   font-size: 15px;
   font-weight: 500;
   border: 1px solid rgba(255, 255, 255, 0.17);
@@ -1871,7 +1836,7 @@ i {
 }
 
 .table tbody tr:nth-child(odd) {
-  background: #2e0327;
+  background: #102b30;
 }
 
 .table tbody tr td {
@@ -1880,7 +1845,9 @@ i {
   padding: 10px 15px;
   border-width: 1px;
   border-color: rgba(255, 255, 255, 0.17);
+  border-width: 1px;
 }
+/* Table ends here */
 
 .custom--card {
   border: 1px solid rgba(255, 255, 255, 0.17);
@@ -2205,7 +2172,7 @@ i {
   overflow-y: auto;
 }
 
-/* .account__main__wrapper {
+.account__main__wrapper {
   display: flex;
   padding-top: 50px;
   padding-bottom: 50px;
@@ -2213,9 +2180,10 @@ i {
 
 @media (max-width: 991px) {
   .account__main__wrapper {
+    flex-direction: column-reverse;
     flex-wrap: wrap;
   }
-} */
+}
 
 .account__form__wrapper {
   text-align: center;
@@ -2270,6 +2238,7 @@ i {
 }
 
 .account__form__wrapper.sign-up {
+  background-color: #14343b;
   padding-left: 50px;
   padding-right: 50px;
   max-width: 700px;
@@ -2320,7 +2289,7 @@ i {
 .account__content__wrapper {
   margin: 8rem 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 40%);
   position: relative;
 }
@@ -3002,14 +2971,12 @@ select.form--control option:hover {
 
 .game-item__thumb {
   width: 100%;
-  height: 140px;
+  height: 200px;
   margin: 0 auto 25px;
   border: 1px solid rgba(255, 255, 255, 0.17);
   border-radius: 7px;
   background-color: #14343b;
-  padding: 10px;
 }
-
 @media (max-width: 1399px) {
   .game-item__thumb {
     height: 130px;
@@ -3019,6 +2986,9 @@ select.form--control option:hover {
 .game-item__thumb img {
   height: 100%;
   width: 100%;
+  object-fit: cover;
+}
+.game-item__thumb #trophy {
   object-fit: contain;
 }
 
@@ -3104,7 +3074,7 @@ select.form--control option:hover {
   position: relative;
 }
 
-.why-section .shape1{
+.why-section .shape1 {
   left: -100px;
   top: 50px;
   z-index: -1;
@@ -4018,7 +3988,6 @@ div[class*="col"]:nth-child(even) > .faq-item {
 
 .game-details-left {
   padding: 50px;
-  background-color: #2e0327;
   border-radius: 8px;
   min-height: 100%;
 }
@@ -4103,7 +4072,7 @@ div[class*="col"]:nth-child(even) > .faq-item {
   transition: all ease 0.3s;
   width: 300px;
   height: 300px;
-  animation: coin-rotate 2s linear infinite;
+  animation: coin-rotate 5s linear infinite;
 }
 
 .coins-wrapper img {
@@ -4127,9 +4096,8 @@ div[class*="col"]:nth-child(even) > .faq-item {
 }
 
 @media (max-width: 450px) {
-  .coins-wrapper {
-    width: 150px;
-    height: 150px;
+  .dashboard-section {
+    padding-top: 0;
   }
 }
 
@@ -4634,5 +4602,59 @@ iframe {
     transform: rotateX(90deg);
   }
 }
+/* reCapcha v2 message required */
+#g-recaptcha-response {
+  display: block !important;
+  position: absolute;
+  margin: -78px 0 0 0 !important;
+  width: 302px !important;
+  height: 76px !important;
+  z-index: -999999;
+  opacity: 0;
+}
+.table tbody tr:nth-child(odd) {
+  background: #102a2f;
+}
+#game-item-bad-beat::after {
+  background: none;
+}
+#bad-beat {
+  background: none;
+  height: 250px;
+  border: none;
+}
+.animated-prize {
+  font-size: 4rem;
+  color: white;
+  text-shadow: 5px 0px 0px #fabe2c;
+}
 
+
+#bad-beat img {
+  filter: drop-shadow(0 0 4px #000);
+  transition: transform 0.5s;
+  animation: animate 2s linear infinite;
+}
+
+@keyframes animate {
+  0%, 100% {
+      transform: scale(1);
+  }
+
+  50% {
+      transform: scale(1.2);
+  }
+}
+
+@media (max-width: 575px) {
+  .animated-prize {
+    font-size: 2rem;
+  }
+  #bad-beat{
+    height: 200px;
+  }
+  td{
+    padding-right: 0 !important;
+  }
+}
 /*# sourceMappingURL=main.css.map */
