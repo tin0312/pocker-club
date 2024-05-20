@@ -27,37 +27,53 @@ document.addEventListener("DOMContentLoaded", function () {
 //Open and close waitlist
 // Get the current date and time
 const now = new Date();
-const currentHour = now.getHours();
-const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+const currentHour = 14;
+const currentDay = 1; // 0 (Sunday) to 6 (Saturday)
 const joinBtn = document.querySelector("#join-btn");
 
 joinBtn?.addEventListener("click", (event) => {
-  // Prevent the default form submission behavior
-  event.preventDefault();
-  // Check if the current time is within the allowed time range
-  const isWithinTimeRange =
-    (currentDay >= 1 &&
-      currentDay <= 5 &&
-      currentHour >= 13 &&
-      currentHour < 24) || // Monday to Friday, 1pm to 12am
-    ((currentDay === 0 || currentDay === 6) &&
-      currentHour >= 9 &&
-      currentHour < 24); // Saturday and Sunday, 9am to 12am
+ // Prevent the default form submission behavior
+ event.preventDefault();
+  
+ // Check if the current time is within the allowed time range
+ const currentDate = new Date();
+ const currentDay = currentDate.getDay();
+ const currentHour = currentDate.getHours();
+ 
+ const isWithinTimeRange =
+   (currentDay >= 1 &&
+     currentDay <= 5 &&
+     currentHour >= 13 &&
+     currentHour < 24) || // Monday to Friday, 1pm to 12am
+   ((currentDay === 0 || currentDay === 6) &&
+     currentHour >= 9 &&
+     currentHour < 24); // Saturday and Sunday, 9am to 12am
 
-  // If the current time is not within the allowed time range, prevent form submission and display an alert
-  if (!isWithinTimeRange) {
-    // Change alert type to alert-danger
-    $(".alert").removeClass("alert-info").addClass("alert-danger");
-    // Change alert message
-    $(".alert").html(
-      "<strong>Error:</strong> Waitlist is currently closed. Please try again during operating hours."
-    );
-  // Scroll to the alert for better visibility
-  $(".alert").get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else {
-    // If the current time is within the allowed time range, allow form submission
-    $(".contact-form").submit();
-  }
+ // Reference to the form
+ const form = document.querySelector(".contact-form");
+ 
+ // Check if the current time is not within the allowed time range
+ if (!isWithinTimeRange) {
+   // Change alert type to alert-danger
+   $(".alert").removeClass("alert-info").addClass("alert-danger");
+   // Change alert message
+   $(".alert").html(
+     "<strong>Error:</strong> Waitlist is currently closed. Please try again during operating hours."
+   );
+   // Scroll to the alert for better visibility
+   $(".alert").get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
+ } else if (!form.checkValidity()) {
+   // If the form is invalid, display a custom error message and scroll to the first invalid field
+   $(".alert").removeClass("alert-info").addClass("alert-danger");
+   $(".alert").html(
+     "<strong>Error:</strong> Please fill out all required fields correctly."
+   );
+   $(".alert").get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
+   form.reportValidity();
+ } else {
+   // If the current time is within the allowed time range and the form is valid, allow form submission
+   form.submit();
+ }
 });
 
 // Preloader
