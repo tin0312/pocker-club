@@ -53,7 +53,7 @@ joinBtn?.addEventListener("click", (event) => {
  const form = document.querySelector(".contact-form");
  
  // Check if the current time is not within the allowed time range
- if (isWithinTimeRange) {
+ if (!isWithinTimeRange) {
    // Change alert type to alert-danger
    $(".alert").removeClass("alert-info").addClass("alert-danger");
    // Change alert message
