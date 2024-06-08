@@ -34,6 +34,7 @@ function initializeFirebaseAdmin() {
 }
 initializeFirebaseAdmin();
 const db = admin.firestore();
+const Timestamp = admin.firestore.Timestamp
 
 let isSubmitted = false;
 
@@ -78,14 +79,26 @@ async function sendTwilioMessage(phone, messageBody) {
   }
 }
 
+function formatTime(timestamp){
+  const date = timestamp.toDate();
+  let hour = date.getHours();
+  const min = date.getMinutes().toString().padStart(2,0);
+  let ampm = hour > 12 ? "PM" : "AM";
+  hour = hour % 12;
+  hour = hour ? hour : 12;
+  return `${hour}:${min} ${ampm}`; 
+}
+
 // Save user to Firestore
 async function saveWaitList(fname, lname, phone, msg, game) {
   const userId = nanoid();
+  const timeStamp = formatTime(Timestamp.now())
   try {
     const collectionSnapshot = await db.collection("waitlist").get();
     const position = collectionSnapshot.size + 1; // Increment count to get position
     await db.collection("waitlist").doc(userId).set({
       id: userId,
+      wait: timeStamp,
       fname: fname,
       lname: lname,
       phone: phone,
@@ -103,7 +116,7 @@ async function saveWaitList(fname, lname, phone, msg, game) {
   ).catch((error) => {
     console.error("Error sending SMS:", error);
   });
-    const customerInfoMessage = `New customer information:\nName: ${fname} ${lname}\nPhone: ${phone}\nMessage: ${msg}\nGame: ${game}`;
+    const customerInfoMessage = `New customer information:\n\nTime added: ${timeStamp}\nName: ${fname} ${lname}\nPhone: ${phone}\nMessage: ${msg}\nGame: ${game}`;
     await sendTwilioMessage(process.env.PERSONAL_PHONE, customerInfoMessage);
   } catch (error) {
     console.error("Error adding user to Firestore: ", error);
