@@ -34,7 +34,7 @@ function initializeFirebaseAdmin() {
 }
 initializeFirebaseAdmin();
 const db = admin.firestore();
-const Timestamp = admin.firestore.Timestamp
+const Timestamp = admin.firestore.Timestamp;
 
 let isSubmitted = false;
 
@@ -59,7 +59,7 @@ app.get("/confirmation", (req, res) => {
 router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
-  const { fname, lname,phone, msg, game } = req.body;
+  const { fname, lname, phone, msg, game } = req.body;
   // Save user to Firestore
   await saveWaitList(fname, lname, phone, msg, game);
   res.redirect("/confirmation.html");
@@ -79,20 +79,20 @@ async function sendTwilioMessage(phone, messageBody) {
   }
 }
 
-function formatTime(timestamp){
+function formatTime(timestamp) {
   const date = timestamp.toDate();
   let hour = date.getHours();
-  const min = date.getMinutes().toString().padStart(2,0);
-  let ampm = hour > 12 ? "PM" : "AM";
+  const min = date.getMinutes().toString().padStart(2, "0");
+  let ampm = hour >= 12 ? "PM" : "AM";
   hour = hour % 12;
   hour = hour ? hour : 12;
-  return `${hour}:${min} ${ampm}`; 
+  return `${hour}:${min} ${ampm}`;
 }
 
 // Save user to Firestore
 async function saveWaitList(fname, lname, phone, msg, game) {
   const userId = nanoid();
-  const timeStamp = formatTime(Timestamp.now())
+  const timeStamp = formatTime(Timestamp.now());
   try {
     const collectionSnapshot = await db.collection("waitlist").get();
     const position = collectionSnapshot.size + 1; // Increment count to get position
@@ -107,15 +107,15 @@ async function saveWaitList(fname, lname, phone, msg, game) {
       position: position,
     });
     console.log("User added to Firestore");
-      // Get user's position in waitlist
+    // Get user's position in waitlist
     const userPosition = await getCurrentPosition();
     // Send Twilio message
     await sendTwilioMessage(
-    phone,
-    `Omega Poker T.O.P Club\n Hi ${fname},\nYou have successfully booked a seat with us.Your position is ${userPosition} in the waitlist.We will notify you when the seat is available!\nThank you!\nSee live: https://positionupdate.netlify.app/${userId}`
-  ).catch((error) => {
-    console.error("Error sending SMS:", error);
-  });
+      phone,
+      `Omega Poker T.O.P Club\n Hi ${fname},\nYou have successfully booked a seat with us.Your position is ${userPosition} in the waitlist.We will notify you when the seat is available!\nThank you!\nSee live: https://positionupdate.netlify.app/${userId}`
+    ).catch((error) => {
+      console.error("Error sending SMS:", error);
+    });
     const customerInfoMessage = `New customer information:\n\nTime added: ${timeStamp}\nName: ${fname} ${lname}\nPhone: ${phone}\nMessage: ${msg}\nGame: ${game}`;
     await sendTwilioMessage(process.env.PERSONAL_PHONE, customerInfoMessage);
   } catch (error) {
