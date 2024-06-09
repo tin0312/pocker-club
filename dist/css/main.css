@@ -2972,6 +2972,7 @@ select.form--control option:hover {
 .game-item__thumb {
   width: 100%;
   height: 200px;
+  overflow: hidden;
   margin: 0 auto 25px;
   border: 1px solid rgba(255, 255, 255, 0.17);
   border-radius: 7px;
@@ -4616,7 +4617,12 @@ iframe {
   background: #102a2f;
 }
 #game-item-bad-beat::after {
-  background: none;
+  background-image: url(../images/game/bad-beat-bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right 5px bottom 2px; /* Move up by 10 pixels */
+
+
 }
 #bad-beat {
   background: none;

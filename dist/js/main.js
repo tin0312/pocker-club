@@ -41,7 +41,7 @@ joinBtn?.addEventListener("click", (event) => {
  const currentHour = currentDate.getHours();
  
  const isWithinTimeRange =
-   (currentDay >= 1 &&
+   (currentDay >= 2 &&
      currentDay <= 5 &&
      currentHour >= 13 &&
      currentHour < 24) || // Monday to Friday, 1pm to 12am

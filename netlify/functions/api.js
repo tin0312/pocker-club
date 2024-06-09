@@ -6,6 +6,7 @@ import { Twilio } from "twilio";
 import { nanoid } from "nanoid";
 import admin from "firebase-admin";
 import "dotenv/config";
+import moment  from "moment-timezone"; 
 
 const app = express();
 const router = Router();
@@ -79,16 +80,11 @@ async function sendTwilioMessage(phone, messageBody) {
   }
 }
 
-function formatTime(timestamp) {
-  const date = timestamp.toDate();
-  let hour = date.getHours();
-  const min = date.getMinutes().toString().padStart(2, "0");
-  let ampm = hour >= 12 ? "PM" : "AM";
-  hour = hour % 12;
-  hour = hour ? hour : 12;
-  return `${hour}:${min} ${ampm}`;
+function formatTime(timestamp, timeZone = 'America/Toronto') {
+  const utcDate = timestamp.toDate(); 
+  const localDate = moment(utcDate).tz(timeZone);
+  return localDate.format('h:mm A');
 }
-
 // Save user to Firestore
 async function saveWaitList(fname, lname, phone, msg, game) {
   const userId = nanoid();
