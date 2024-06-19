@@ -61,9 +61,14 @@ router.post("/form-submission", async (req, res) => {
   isSubmitted = true;
   // Extract form data from the request body
   const { fname, lname, phone, msg, game } = req.body;
-  // Save user to Firestore
-  await saveWaitList(fname, lname, phone, msg, game);
-  res.redirect("/confirmation.html");
+  try {
+    // Save user to Firestore
+    await saveWaitList(fname, lname, phone, msg, game);
+    res.redirect("/confirmation.html");
+  } catch (error) {
+    console.error("Error during form submission:", error);
+    res.status(500).send("Failed to submit the form.");
+  }
 });
 
 // Set up SMS message
@@ -77,6 +82,7 @@ async function sendTwilioMessage(phone, messageBody) {
     console.log("Twilio message sent successfully.");
   } catch (error) {
     console.error("Error sending Twilio message:", error);
+    throw new Error("Failed to send message! Please try again");
   }
 }
 
@@ -108,14 +114,13 @@ async function saveWaitList(fname, lname, phone, msg, game) {
     // Send Twilio message
     await sendTwilioMessage(
       phone,
-      `Omega Poker T.O.P Club\n Hi ${fname},\nYou have successfully booked a seat with us.Your position is ${userPosition} in the waitlist.We will notify you when the seat is available!\nThank you!\nSee live: https://positionupdate.netlify.app/${userId}`
-    ).catch((error) => {
-      console.error("Error sending SMS:", error);
-    });
+      `Omega Poker T.O.P Club\n Hi ${fname},\nYou have successfully booked a seat with us.Your position is ${userPosition} in the waitlist.We will notify you when the seat is available!\nThank you!\nLive update: https://positionupdate.netlify.app/${userId}`
+    )
     const customerInfoMessage = `New customer information:\n\nTime added: ${timeStamp}\nName: ${fname} ${lname}\nPhone: ${phone}\nMessage: ${msg}\nGame: ${game}`;
     await sendTwilioMessage(process.env.PERSONAL_PHONE, customerInfoMessage);
   } catch (error) {
     console.error("Error adding user to Firestore: ", error);
+    throw new Error("Failed to save waitlist or send message.");
   }
 }
 
